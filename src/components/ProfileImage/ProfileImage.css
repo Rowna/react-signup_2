@@ -1,0 +1,12 @@
+.img-container {
+    margin-top: 2.5rem;
+    width: 300px;
+    height: 300px;
+    border-radius: 50%;
+}
+.profile-pic {
+    height: 300px; 
+    width: 300px;
+    border-radius: 50%;
+    border: 12px solid #d7d8dd;
+}

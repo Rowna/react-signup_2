@@ -1,0 +1,34 @@
+.input-container {
+    display: grid;
+    grid-gap: 20px;
+    grid-template-columns: repeat(6, 1fr);
+    margin-top: 2rem;
+    padding-left: 2rem;
+    padding-right: 2rem;
+} 
+.firstname-input {
+    grid-column: 1 / 4;
+}
+.lastname-input {  
+    grid-column: 4 / 7; 
+}
+.email-input {
+    grid-column: 1 / -1;
+}
+.street-input {
+    grid-column: 1 / 5; 
+}
+.hnr-input {
+    grid-column: 5 / 7;
+}
+.postcode-input {
+    grid-column: 1 / 3;
+}
+.country-input {
+    grid-column: 3 / -1;
+}
+.btn {
+    width: 90%;
+    margin-top: 3rem;
+    margin-bottom: 4rem;
+}
