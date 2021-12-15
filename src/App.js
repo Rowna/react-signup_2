@@ -1,9 +1,12 @@
 import SignUp from './components/SignUp'; 
 import './App.css';
 
-function App() {
+// function App () { .. }
+const App = () => {
   return (
-    <SignUp />
+    <div className='App'>
+      <SignUp />
+    </div>
   );
 }
 

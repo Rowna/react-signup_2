@@ -2,7 +2,8 @@ import React from 'react';
 import './ProfileImage.css';
 import profile from '../../images/profile.png';
 
-function ProfileImage() {
+// function ProfileImage() {
+const ProfileImage = () => {
     return (
         <div className="img-container">
             <img src={profile} alt="img" className="profile-pic"/>

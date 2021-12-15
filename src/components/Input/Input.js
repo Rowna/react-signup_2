@@ -1,13 +1,19 @@
 import React from 'react';
 import './Input.css';
 
-function Input(props) {
-      
+//function Input(props) {
+const Input = (props) => {      
+
+    const formValue = (event) => {
+        props.onChangeHandler(event.target.value);
+    }
+
     return (
-        <div className={props.className}>
-            <input className={`input ${props.className}`}
+        <div className={props.gridPosition}>
+            <input className="input"
                    type={props.type || 'text'} 
                    placeholder={props.placeholder}
+                   onChange={formValue}
             />
         </div>
     )
