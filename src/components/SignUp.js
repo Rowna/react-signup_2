@@ -6,44 +6,46 @@ import Button from './Button/Button';
 import './SignUp.css';
 
 
-// function SignUp() {
+// function SignUp() { 
 const SignUp = () => {
     
-        const [firstname, setFirstname] = useState('');
-        console.log(firstname);
+       const [firstname, setFirstname] = useState('');
+       console.log(firstname);
 
-        // const [lastname, setLastname] = useState('');
+       //  const [lastname, setLastname] = useState('');
     
+       /* 
+       function updateValue(e) {
+              if (e.target.name === "Vorname") {
+                     setFirstname(e.target.value);
+                     console.log(`firstName state: ${firstname}`)
+              }
 
-    // const userInputHandlerMap = {
-    //     firstname: (event) => {
-    //         setFirstname(event.target.value)
-    //     },
-    //     lastname: (event) => {
-    //         setLastname(event.target.value)
-    //     },
-    //     email: '',
-    //     street: '',
-    //     hnr: '',
-    //     postcode: '',
-    //     country: ''
-    // }
-    // console.log(userInput);
+              if (e.target.name === "Nachname") {
+                     setLastname(e.target.value);
+                     console.log(`lastName state: ${lastname}`)
+              }
 
- 
-    return (
+              // ...
+      } 
+       */
+    
+      return (
         <FormBox > 
             <ProfileImage />
             <div className='input-container'>
                 <Input gridPosition="firstname-input" 
                        type="text" 
-                       placeholder='Vorname' 
+                       placeholder='Vorname'
+                       name='Vorname'
                        onChangeHandler={setFirstname}
 
                 />
                 <Input gridPosition="lastname-input" 
-                       type="text" 
+                       type="text"
+                       name="Nachname"
                        placeholder='Nachname' 
+                     //   onChangeHandler={updateValue}
 
                 />
                 <Input gridPosition="email-input" 

@@ -5,6 +5,7 @@ import './Input.css';
 const Input = (props) => {      
 
     const formValue = (event) => {
+        // console.log(`Updating '${props.name}' with '${event.target.value}'`)
         props.onChangeHandler(event.target.value);
     }
 
@@ -12,9 +13,11 @@ const Input = (props) => {
         <div className={props.gridPosition}>
             <input className="input"
                    type={props.type || 'text'} 
+                   name={props.name}
                    placeholder={props.placeholder}
+                //    onChange={(event) => {props.onChangeHandler(event.target.value)}}
                    onChange={formValue}
-            />
+            /> 
         </div>
     )
 }
