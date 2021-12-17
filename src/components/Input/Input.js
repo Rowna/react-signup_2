@@ -1,13 +1,19 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './Input.css';
 
 //function Input(props) {
 const Input = (props) => {      
 
-    const formValue = (event) => {
-        // console.log(`Updating '${props.name}' with '${event.target.value}'`)
-        props.onChangeHandler(event.target.value);
-    }
+    const [firstname, setFirstname] = useState('');
+    
+    // const inputValue = (event) => {
+        //     props.onChangeHandler(event.target.value);
+        // }
+        
+        const inputChangeHandler = (event) => {
+            setFirstname(event.target.value);
+            console.log(firstname);
+    };
 
     return (
         <div className={props.gridPosition}>
@@ -15,8 +21,7 @@ const Input = (props) => {
                    type={props.type || 'text'} 
                    name={props.name}
                    placeholder={props.placeholder}
-                //    onChange={(event) => {props.onChangeHandler(event.target.value)}}
-                   onChange={formValue}
+                   onChange={ inputChangeHandler }
             /> 
         </div>
     )

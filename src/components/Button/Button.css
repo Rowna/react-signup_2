@@ -8,7 +8,10 @@
     font-size: 1.4rem;
     color: #ffffff; 
 }
-.button:active {
+/* .button:active {
     transform: scale(0.9);
     transition-duration: 100ms;
+} */
+.disabled {
+    background-color: #10AC84 !important;
 }

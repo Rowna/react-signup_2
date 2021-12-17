@@ -10,25 +10,13 @@ import './SignUp.css';
 const SignUp = () => {
     
        const [firstname, setFirstname] = useState('');
-       console.log(firstname);
+       const [lastname, setLastname] = useState('');
+       const [email, setEmail] = useState('');
+       const [street, setStreet] = useState('');
+       const [hnr , setHnr] = useState('');
+       const [postcode , setPostcode] = useState('');
+       const [country , setCountry] = useState('');
 
-       //  const [lastname, setLastname] = useState('');
-    
-       /* 
-       function updateValue(e) {
-              if (e.target.name === "Vorname") {
-                     setFirstname(e.target.value);
-                     console.log(`firstName state: ${firstname}`)
-              }
-
-              if (e.target.name === "Nachname") {
-                     setLastname(e.target.value);
-                     console.log(`lastName state: ${lastname}`)
-              }
-
-              // ...
-      } 
-       */
     
       return (
         <FormBox > 
@@ -37,40 +25,38 @@ const SignUp = () => {
                 <Input gridPosition="firstname-input" 
                        type="text" 
                        placeholder='Vorname'
-                       name='Vorname'
-                       onChangeHandler={setFirstname}
-
+                     //   onChangeHandler={setFirstname}
                 />
                 <Input gridPosition="lastname-input" 
                        type="text"
-                       name="Nachname"
-                       placeholder='Nachname' 
-                     //   onChangeHandler={updateValue}
-
+                       placeholder='Nachname'
+                       onChangeHandler= {setLastname} 
                 />
-                <Input gridPosition="email-input" 
+                <Input gridPosition="email-input"
+                       type="text" 
                        placeholder='E-Mail-Adresse' 
-
+                       onChangeHandler= {setEmail}
                 />
-                <Input gridPosition="street-input" 
-                       placeholder='Straße' 
-
+                <Input gridPosition="street-input"
+                       type="text" 
+                       placeholder='Straße'
+                       onChangeHandler= {setStreet} 
                 />
-                <Input gridPosition="hnr-input" 
-                       placeholder='Hsnr.' 
-
+                <Input gridPosition="hnr-input"
+                       placeholder='Hsnr.'
+                       onChangeHandler= {setHnr} 
                 />
                 <Input gridPosition="postcode-input" 
-                       placeholder='PLZ' 
-
+                       placeholder='PLZ'
+                       onChangeHandler= {setPostcode} 
                 />
                 <Input gridPosition="country-input" 
-                       placeholder='Ort' 
-
+                       placeholder='Ort'
+                       onChangeHandler= {setCountry} 
                 />
             </div> 
-            <Button className="btn" />
-            {/* <Button className="btn" disabled={firstname && lastname}/> */}
+            {/* <Button className="btn" /> */}
+            <Button className="btn" disabled={ firstname && lastname }/>
         </FormBox> 
     );
 }
