@@ -16,8 +16,21 @@ const SignUp = () => {
        const [hnr , setHnr] = useState('');
        const [postcode , setPostcode] = useState('');
        const [country , setCountry] = useState('');
+       
+       const [buttonDisabled, setButtonDisabled] = useState(true);
 
-    
+       // console.log(props.onChangeHandler);
+
+      const formChangeHandler = (event) => {
+              if (event.target.name === 'vorname') {
+                     setFirstname(event.target.value);
+              }
+
+              if (firstname.length >= 3) {
+                     setButtonDisabled(false)
+              }
+      }
+       
       return (
         <FormBox > 
             <ProfileImage />
@@ -25,7 +38,9 @@ const SignUp = () => {
                 <Input gridPosition="firstname-input" 
                        type="text" 
                        placeholder='Vorname'
-                     //   onChangeHandler={setFirstname}
+                       name='vorname'
+                     //   value={setFirstname}
+                       onChangeHandler={formChangeHandler}
                 />
                 <Input gridPosition="lastname-input" 
                        type="text"
@@ -55,8 +70,9 @@ const SignUp = () => {
                        onChangeHandler= {setCountry} 
                 />
             </div> 
-            {/* <Button className="btn" /> */}
-            <Button className="btn" disabled={ firstname && lastname }/>
+            <Button className="btn" disabled={buttonDisabled}/>
+            {/* <Button className="btn" onChangeButton={onChangeData}/> */}
+            {/* <Button className="btn" disabled={ firstname && lastname }/> */}
         </FormBox> 
     );
 }

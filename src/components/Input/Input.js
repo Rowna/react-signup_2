@@ -1,19 +1,14 @@
-import React, { useState } from 'react';
+import React from 'react';
 import './Input.css';
 
 //function Input(props) {
 const Input = (props) => {      
-
-    const [firstname, setFirstname] = useState('');
     
     // const inputValue = (event) => {
-        //     props.onChangeHandler(event.target.value);
-        // }
-        
-        const inputChangeHandler = (event) => {
-            setFirstname(event.target.value);
-            console.log(firstname);
-    };
+    //         props.onChangeHandler(event.target.value);
+    //     }
+
+
 
     return (
         <div className={props.gridPosition}>
@@ -21,7 +16,7 @@ const Input = (props) => {
                    type={props.type || 'text'} 
                    name={props.name}
                    placeholder={props.placeholder}
-                   onChange={ inputChangeHandler }
+                   onChange={ props.onChangeHandler }
             /> 
         </div>
     )

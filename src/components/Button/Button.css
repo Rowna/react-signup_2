@@ -12,6 +12,6 @@
     transform: scale(0.9);
     transition-duration: 100ms;
 } */
-.disabled {
+.enabled {
     background-color: #10AC84 !important;
 }
