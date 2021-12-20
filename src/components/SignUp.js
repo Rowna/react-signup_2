@@ -8,6 +8,8 @@ import './SignUp.css';
 
 // function SignUp() { 
 const SignUp = () => {
+
+       
     
        const [firstname, setFirstname] = useState('');
        const [lastname, setLastname] = useState('');
@@ -18,19 +20,54 @@ const SignUp = () => {
        const [country , setCountry] = useState('');
        
        const [buttonDisabled, setButtonDisabled] = useState(true);
+       
+       const formChangeHandler = (event) => {
+              if(event.target.name === 'vorname' && firstname.length >= 3) {
+                     setFirstname(event.target.value);
+              }
+              if (event.target.name === 'nachname' && lastname.length >=3) {
+                     setLastname(event.target.value); 
+              }
+              if(event.target.name === 'email' && email.length >=6) {
+                     setEmail(event.target.value);
+              }
+              if (event.target.name === 'strasse' && street.length >=3) {
+                     setStreet(event.target.value); 
+              }
+              if (event.target.name === 'hnr' && hnr.length >=3) {
+                     setHnr(event.target.value); 
+              }
+              if (event.target.name === 'plz' && postcode.length >=3) {
+                     setPostcode(event.target.value); 
+              }
+              if (event.target.name === 'ort') {
+                     setCountry(event.target.value); 
+              }
+              
+              if(country.length >=3 ) {
+                     setButtonDisabled(false); 
+              } else {
+                     setButtonDisabled(true); 
+              }
+       } 
 
-       // console.log(props.onChangeHandler);
-
+       /* 
       const formChangeHandler = (event) => {
               if (event.target.name === 'vorname') {
                      setFirstname(event.target.value);
+                     // setLastname(event.target.value);
+                     // setEmail(event.target.value);
+                     // setStreet(event.target.value);
+                     // setHnr(event.target.value);
+                     // setPostcode(event.target.value);
+                     // setCountry(event.target.value);
               }
-
               if (firstname.length >= 3) {
                      setButtonDisabled(false)
               }
       }
-       
+      */ 
+      
       return (
         <FormBox > 
             <ProfileImage />
@@ -39,39 +76,43 @@ const SignUp = () => {
                        type="text" 
                        placeholder='Vorname'
                        name='vorname'
-                     //   value={setFirstname}
                        onChangeHandler={formChangeHandler}
                 />
                 <Input gridPosition="lastname-input" 
                        type="text"
+                       name='nachname'
                        placeholder='Nachname'
-                       onChangeHandler= {setLastname} 
+                       onChangeHandler= {formChangeHandler} 
                 />
                 <Input gridPosition="email-input"
-                       type="text" 
+                       type="text"
+                       name='email' 
                        placeholder='E-Mail-Adresse' 
-                       onChangeHandler= {setEmail}
+                       onChangeHandler= {formChangeHandler}
                 />
                 <Input gridPosition="street-input"
-                       type="text" 
+                       type="text"
+                       name='strasse' 
                        placeholder='Straße'
-                       onChangeHandler= {setStreet} 
+                       onChangeHandler= {formChangeHandler} 
                 />
                 <Input gridPosition="hnr-input"
+                       name='hnr'
                        placeholder='Hsnr.'
-                       onChangeHandler= {setHnr} 
+                       onChangeHandler= {formChangeHandler} 
                 />
-                <Input gridPosition="postcode-input" 
+                <Input gridPosition="postcode-input"
+                       name='plz' 
                        placeholder='PLZ'
-                       onChangeHandler= {setPostcode} 
+                       onChangeHandler= {formChangeHandler} 
                 />
                 <Input gridPosition="country-input" 
+                       name='ort'
                        placeholder='Ort'
-                       onChangeHandler= {setCountry} 
+                       onChangeHandler= {formChangeHandler} 
                 />
             </div> 
             <Button className="btn" disabled={buttonDisabled}/>
-            {/* <Button className="btn" onChangeButton={onChangeData}/> */}
             {/* <Button className="btn" disabled={ firstname && lastname }/> */}
         </FormBox> 
     );
