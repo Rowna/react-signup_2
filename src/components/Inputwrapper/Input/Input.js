@@ -1,11 +1,12 @@
 import React from 'react';
 import './Input.css';
 
-//function Input(props) {
+//function Input(props) { 
 const Input = (props) => { 
     const errorClass = props.hasError ? 'input--has-error' : '';
+    
     return (
-        <div className={errorClass}>
+        <div className={errorClass}> 
             <input className="input"
                    type={props.type || 'text'} 
                    name={props.name}

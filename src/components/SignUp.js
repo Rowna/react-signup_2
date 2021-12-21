@@ -1,48 +1,25 @@
 import React, { useState } from 'react';
 import FormBox from './FormBox';
 import ProfileImage from './ProfileImage/ProfileImage';
-import Input from './Inputwrapper/Input/Input';
 import InputWrapper from './Inputwrapper/Inputwrapper';
+import Input from './Inputwrapper/Input/Input';
+import Error from './Error/Error';
 import Button from './Button/Button';
 import './SignUp.css';
-
 
 
 function validateForm(values) {
        const errors = {};
 
-       // errors.firstname = values.firstname = "^[A-Za-z0-9] {3,16}$";
        errors.firstname = values.firstname.length >= 3;
        errors.lastname = values.lastname.length >= 3;
        errors.email = values.email.length >= 3;
        errors.street = values.email.length >= 3;
 
-       return errors;
+       return errors; // {"firstname":false,"lastname":false,"email":false,"street":false}
 }
 
-
-// function SignUp() { 
 const SignUp = () => {
-
-       const initialInputs = [
-              {
-                     id: '',
-                     firstname: 'firstname',
-                     placeholder: 'Vorname',
-                     value: '',
-                     name: '',
-                     type: 'text',
-                     pattern: '^[A-Za-z0-9] {3,16}$',
-              },
-              {
-                     id: '',
-                     lastname: 'lastname',
-                     placeholder: 'Nachname',
-                     value: '',
-                     name: '',
-                     type: 'text',
-              },
-       ];
 
        const initialValues = {
                             firstname: '', 
@@ -56,16 +33,6 @@ const SignUp = () => {
                      
        const [formValues, setFormValues] = useState(initialValues);
        const [errors, setErrors] = useState({});
-    
-      /*  
-       const [firstname, setFirstname] = useState('');
-       const [lastname, setLastname] = useState('');
-       const [email, setEmail] = useState('');
-       const [street, setStreet] = useState('');
-       const [hnr , setHnr] = useState('');
-       const [postcode , setPostcode] = useState('');
-       const [country , setCountry] = useState('');
-         */
        const [buttonDisabled, setButtonDisabled] = useState(true);
      
        const formChangeHandler = (event) => {
@@ -76,33 +43,6 @@ const SignUp = () => {
               // das liegt am rueckgabewert von validateForm()
               setErrors(validateForm(nextValues));
        }
-       /*  
-       const formChangeHandler = (event) => {
-              const myValues = {...formValues}
-              if(event.target.name === 'vorname' && firstname.length >= 3) {
-                     myValues.firstname = event.target.value;
-              }
-              if (event.target.name === 'nachname' && lastname.length >=3) {
-                     setLastname(event.target.value); 
-              }
-              if(country.length >=3 ) {
-                     setButtonDisabled(false); 
-              } else {
-                     setButtonDisabled(true); 
-              }
-       } 
-       */
-
-       /* 
-      const formChangeHandler = (event) => {
-              if (event.target.name === 'vorname') {
-                     setFirstname(event.target.value);
-              }
-              if (firstname.length >= 3) {
-                     setButtonDisabled(false)
-              }
-      }
-      */ 
       
       return ( 
         <FormBox > 
@@ -114,24 +54,28 @@ const SignUp = () => {
                        type="text"
                        placeholder='Vorname'
                        name='firstname'
-                       hasError={!errors.firstname}
+                       hasError={errors.firstname === false}
                        value={formValues.firstname}
                        onChangeHandler={formChangeHandler}
                 />
-                {errors.firstname === false && <p>Vorname ist erforderlich</p> }
-                {/* {errors.firstname === false && (<Error>Error</Error>) } */}
-                {/* <Error errors={errors} name="firstname" /> */}
+                {/* {errors.firstname === false && <p>Vorname ist erforderlich</p> } */}
+                <Error 
+                       errors={errors} 
+                       name="firstname"        
+                />
                 </InputWrapper>
 
                 <InputWrapper gridPosition="lastname-input">
                 <Input   
                        type="text"
                        name='lastname'
+                       hasError={errors.lastname === false}
                        value={formValues.lastname}
                        placeholder='Nachname'
                        onChangeHandler= {formChangeHandler} 
                 />
-                {errors.lastname === false && <p>Nachname ist erforderlich</p> }
+                {/* {errors.lastname === false && <p>Nachname ist erforderlich</p> } */}
+                <Error errors={errors} name="lastname" />
                 </InputWrapper>
                 
                 <InputWrapper gridPosition="email-input">
