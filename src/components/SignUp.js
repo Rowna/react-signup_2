@@ -15,23 +15,17 @@ const validateForm = (values) => {
        // hier wird geprüft: Ist die Länge von values.firstname >= 3?
        // das Ergebnis ist entweder true oder false.
        // Dieses Ergebnis wird dann errors.firstname zugewiesen. 
-       errors.firstname = values.firstname.length >= 3;
-       // hier wird geprüft: Ist die Laenge von values.lastname >= 3, 
-       // Das Ergebnis ist false oder true,
-       // Dann wird das Ergebnis errors.lastname zugewiesen
+       // if (errors.firstname === values.firstname.length >= 3);
+       errors.firstname = values.firstname.length >= 3
        errors.lastname = values.lastname.length >= 3;
-       // Es wird geprüft: Ist die Länge von values.email >=3 ?
-       // Das Ergebnis ist entweder false oder true,
-       // Dann wird das Ergebnis errors.email zugewiesen
-       errors.email = values.email.length >= 3;
-       // Es wird geprüft: Ist die Länge von values.email >=3?
-       // Das Ergebnis ist entweder true oder false 'bool',
-       // Dann wird das Ergebnis errors.street zugewiesen
+       errors.email = values.email.length >= 3;       
        errors.street = values.street.length >= 3;
+       errors.hnr = values.hnr.length >= 1;
+       errors.postcode = values.postcode.length >=3;
+       errors.country = values.country.length >=3;
 
        return errors; // { "firstname": false,   "lastname": false,    "email": false,  "street": false }
 }
-
 
 const SignUp = () => {
 
@@ -82,7 +76,6 @@ const SignUp = () => {
               // Speicheradresse 22222.
               // Das ist der Unterschied, den React "sieht". Neue Speicheradressen-Eintrag
               // in formValues. Darauf reagiert es und updatet das Component.
-              // Das ist extrem wichtig zu verstehen, damit du die Arbeitsweise von React verstehst!
               setFormValues(nextValues);
               // wichtige Beobachtung: Bei validateForm() "mit Klammern" wird die Funktion ausgefuehrt,
               // bei validateForm ohne Klammern nicht. validateForm speichert die Speicheradresse
@@ -92,6 +85,10 @@ const SignUp = () => {
               // genau diese Speicheradresse ist jetzt der neue Wert der State-Variablen "errors"
               // weil React diese Werte-Änderung mitbekommt, wird dieses Component upgedatet.
               setErrors(validateForm(nextValues));
+              // console.log(validateForm(nextValues));
+              // if (validateForm(nextValues).values === true ) {
+              // }
+              setButtonDisabled(false);
        }
       
       return ( 
@@ -102,14 +99,14 @@ const SignUp = () => {
                 <InputWrapper gridPosition="firstname-input">
                 <Input 
                        type="text"
-                       placeholder='Vorname'
                        name='firstname'
+                       value={formValues.firstname}
+                       placeholder='Vorname'
                        // {!errors.firstname === false}: mit '!' vergleichen wir, ob firstname im Objekt false ist, aber errors{} 
                        // ist ein leeres Objekt, und errors.firstname ist undefined und gibt es noch nicht. Deswegen nachdem es gibt, 
                        // vergleichen wir es, ob es === false. 
                      
                        hasError={errors.firstname === false}
-                       value={formValues.firstname}
                        onChangeHandler={formChangeHandler}
                 />
                 {/* {errors.firstname === false && <p>Vorname ist erforderlich</p> } */}
@@ -120,9 +117,9 @@ const SignUp = () => {
                 <Input   
                        type="text"
                        name='lastname'
-                       hasError={errors.lastname === false}
                        value={formValues.lastname}
                        placeholder='Nachname'
+                       hasError={errors.lastname === false}
                        onChangeHandler= {formChangeHandler} 
                 />
                 {/* {errors.lastname === false && <p>Nachname ist erforderlich</p> } */}
@@ -131,14 +128,15 @@ const SignUp = () => {
                 
                 <InputWrapper gridPosition="email-input">
                 <Input
-                       type="text"
+                       type="email"
                        name='email' 
                        value={formValues.email}
                        placeholder='E-Mail-Adresse' 
+                       hasError={errors.email === false}
                        onChangeHandler= {formChangeHandler}
                 />
-                {errors.email === false && (<p>Eine gültige E-Mail-Adresse ist erforderlich</p>) }
-                {/* {errors.firstname === false && (<Error>Error</Error>) } */}
+                {/* {errors.email === false && (<p>Eine gültige E-Mail-Adresse ist erforderlich</p>) } */}
+                <Error errors={errors} name="email" />
                 </InputWrapper>
 
                 <InputWrapper gridPosition="street-input">
@@ -147,40 +145,48 @@ const SignUp = () => {
                        name='street' 
                        value={formValues.street}
                        placeholder='Straße'
+                       hasError={errors.street === false}
                        onChangeHandler= {formChangeHandler} 
                 />
-                {errors.street === false && (<p>Error</p>) }
+                <Error errors={errors} name="street" />
                 </InputWrapper>
 
                 <InputWrapper gridPosition="hnr-input">
                 <Input 
+                       type="number"
                        name='hnr'
                        value={formValues.hnr}
                        placeholder='Hsnr.'
+                       hasError={errors.hnr === false}
                        onChangeHandler= {formChangeHandler} 
                 />
-                {errors.hnr === false && (<p>Error</p>) }
+                <Error errors={errors} name="hnr" />
                 </InputWrapper>
 
                 <InputWrapper gridPosition="postcode-input">
                 <Input 
+                       type="number"
                        name='postcode' 
                        value={formValues.postcode}
                        placeholder='PLZ'
+                       hasError={errors.postcode === false}
                        onChangeHandler= {formChangeHandler} 
                 />
-                {errors.postcode === false && (<p>Error</p>) }
+                <Error errors={errors} name="postcode"/>
                 </InputWrapper>
 
                 <InputWrapper gridPosition="country-input" >
                 <Input 
                        name='country'
+                       type="text"
                        value={formValues.country}
                        placeholder='Ort'
+                       hasError= {errors.country === false}
                        onChangeHandler= {formChangeHandler} 
                 />
-                {errors.country === false && (<p>Error</p>) }
+                <Error errors={errors} name="country"/>
                 </InputWrapper>
+
             </div>
               
             <Button className="btn" disabled={buttonDisabled}/>
