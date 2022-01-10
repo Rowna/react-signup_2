@@ -5,7 +5,7 @@ import './FormBox.css';
 const FormBox = (props) => {
     
     return (
-        <form className="form-container">
+        <form onSubmit={props.onSubmit} className="form-container">
             {props.children}
         </form>
     )

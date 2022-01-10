@@ -1,12 +1,12 @@
 import React from 'react';
 import './ProfileImage.css';
-import profile from '../../images/profile.png';
+// import profile from '../../images/profile.png';
 
 // function ProfileImage() {
-const ProfileImage = () => {
+const ProfileImage = (props) => {
     return (
         <div className="img-container">
-            <img src={profile} alt="img" className="profile-pic"/>
+            <img src={props.url} alt="img" className="profile-pic"/>
         </div>
     );
 }
