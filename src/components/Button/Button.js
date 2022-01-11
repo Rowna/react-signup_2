@@ -11,7 +11,7 @@ const Button = (props) => {
         //      <button className={props.disabled ? 'button' : 'button enabled'}>{btnTitle}</button>
         // </div>
         <div className={props.className}>  
-            <button className='button' disabled={props.disabled} type="submit" >{props.btnTitle}</button>
+            <button onClick={props.onClickHandler} className='button' disabled={props.disabled}>{props.btnTitle}</button>
         </div> 
     )
 } 

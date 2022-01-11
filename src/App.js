@@ -3,9 +3,12 @@ import './App.css';
 
 // function App () { .. }
 const App = () => {
+  // const onLogin= (data) => {
+  //   // submit Handler
+  // }
   return (
     <div className='App'>
-      <SignUp />
+      <SignUp /* onLogin={onLogin}*/  />
     </div>
   );
 }

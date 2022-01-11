@@ -7,7 +7,10 @@ import Input from "./Inputwrapper/Input/Input";
 import Button from "./Button/Button";
 import "./SignUp.css";
 import useFormInput from "./helper/useFormInput";
-import axios from "axios"
+import axios from "axios";
+
+
+
 const SignUp = (props) => {
   // useFormInput() selbst-erstellter Hook
   const [firstNameValue, firstNameIsValid, onFirstNameChange] = useFormInput("[\\w-]{3}");
@@ -20,16 +23,26 @@ const SignUp = (props) => {
 
   const [formIsValid, setFormIsValid] = useState(false);
   const [imageUrl, setImageUrl] = useState("");
+  // const [error, setError] = useState(false);
 
-  const [error, setError] = useState(false);
+  // für RandomUser
+  const randomUser = () => {
+    axios.get("https://randomuser.me/api/").then(res => res.data).then((data) => {
+      console.log(data.results[0])
+      onEmailChange(data.results[0].email)
+      onFirstNameChange(data.results[0].name.first)
+      onLastNameChange(data.results[0].name.last)
+      onStreetChange(data.results[0].location.street.name)
+      onHnrChange(data.results[0].location.street.number)
+      onPlzChange(data.results[0].location.postcode)
+      onCountryChange(data.results[0].location.country)
+      setImageUrl(data.results[0].picture.medium);
+    });
+  };
 
   // für setFormIsValid
   useEffect(() => {
-    axios.get("https://randomuser.me/api/").then(res => res.data).then((data) => {
-      onEmailChange({target: {value: data.results[0].email}})
-      setImageUrl(data.results[0].picture.medium);
-    })
-
+  // console.log(firstNameValue)
     setFormIsValid(
       firstNameIsValid &&
         lastNameIsValid &&
@@ -49,17 +62,24 @@ const SignUp = (props) => {
     countryIsValid,
   ]);
 
+
+
   // Für btn-ChnageHandler
-  const submitHandler = (event) => {
+  const clickHandler = (event) => {
     event.preventDefault();
-    props.onLogin(
-      onFirstNameChange,
-      onLastNameChange,
-      onEmailChange,
-      onHnrChange,
-      onPlzChange, 
-      onCountryChange
-    );
+    randomUser();
+
+    
+
+
+    // props.onLogin(
+    //   onFirstNameChange,
+    //   onLastNameChange,
+    //   onEmailChange,
+    //   onHnrChange,
+    //   onPlzChange, 
+    //   onCountryChange
+    // );
   };
 
   /* 
@@ -68,9 +88,7 @@ const SignUp = (props) => {
 
     )
   }, [!formIsValid]);
-  */
 
-  /* 
   const errorHandler = () => {
     if (firstNameIsValid) {
       setError("Error");
@@ -90,11 +108,11 @@ const SignUp = (props) => {
             name="firstname"
             value={firstNameValue}
             placeholder="Vorname"
-            onChangeHandler={onFirstNameChange}
+            onChangeHandler={(event) => onFirstNameChange(event.target.value)}
             // hasError={errors.firstname}
 
           />
-          {formIsValid === false && <p>Vorname ist erforderlich</p> }
+          {/* {formIsValid === false && <p>Vorname ist erforderlich</p> } */}
 
           {/* <Error errorsMessage={errors} name="firstname" /> */}
         </InputWrapper>
@@ -105,7 +123,7 @@ const SignUp = (props) => {
             name="lastname"
             value={lastNameValue}
             placeholder="Nachname"
-            onChangeHandler={onLastNameChange}
+            onChangeHandler={(event) => onLastNameChange(event.target.value)}
             // hasError={errors.lastname}
           />
           {/* <Error errorsMessage={errors} name="lastname" /> */}
@@ -117,7 +135,7 @@ const SignUp = (props) => {
             name="email"
             value={emailValue}
             placeholder="E-Mail-Adresse"
-            onChangeHandler={onEmailChange}
+            onChangeHandler={(event) => onEmailChange(event.target.value)}
             // hasError={errors.email}
           />
           {/* <Error errorsMessage={errors} name="email" /> */}
@@ -129,7 +147,7 @@ const SignUp = (props) => {
             name="street"
             value={streetValue}
             placeholder="Straße"
-            onChangeHandler={onStreetChange}
+            onChangeHandler={(event) => onStreetChange(event.target.value)}
             // hasError={errors.street}
           />
           {/* <Error errorsMessage={errors} name="street" /> */}
@@ -141,7 +159,7 @@ const SignUp = (props) => {
             name="hnr"
             value={hnrValue}
             placeholder="Hsnr."
-            onChangeHandler={onHnrChange}
+            onChangeHandler={(event) => onHnrChange(event.target.value)}
             // hasError={errors.hnr}
           />
           {/* <Error errorsMessage={errors} name="hnr" /> */}
@@ -153,7 +171,7 @@ const SignUp = (props) => {
             name="postcode"
             value={plzValue}
             placeholder="PLZ"
-            onChangeHandler={onPlzChange}
+            onChangeHandler={(event) => onPlzChange(event.target.value)}
             // hasError={errors.postcode}
           />
           {/* <Error errorsMessage={errors} name="postcode" /> */}
@@ -165,14 +183,18 @@ const SignUp = (props) => {
             type="text"
             value={countryValue}
             placeholder="Ort"
-            onChangeHandler={onCountryChange}
+            onChangeHandler={(event) => onCountryChange(event.target.value)}
             // hasError={errors.country}
           />
           {/* <Error errorsMessage={errors} name="country" /> */}
         </InputWrapper>
       </div>
 
-      <Button btnTitle={"User generieren"} onSubmit={submitHandler} className="btn" disabled={!formIsValid} />
+      <Button btnTitle={"User generieren"} onClickHandler={clickHandler} className="btn" disabled={!formIsValid} />
+
+      {/* <Button btnTitle={"Bearbeiten"} className="btn" disabled={!clickHandler} /> */}
+      {/* <Button btnTitle={"User anlegen"} className="btn" disabled={!clickHandler} /> */}
+    
     </FormBox>
   );
 };

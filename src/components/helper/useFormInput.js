@@ -9,14 +9,15 @@ const useFormInput = (regex) => {
   const [isValid, setIsValid] = useState(); // Value Prüfer
 
 
-  const changeHandler = (event) => {  // changeHandler() für den value und setValue
-    setValue(event.target.value.trim());
+  const changeHandler = (value) => {  // changeHandler() für den value und setValue
+    setValue(value);
+    console.log(value)
   };
 
   // validate()
   const validate = () => {
     setIsValid(new RegExp(regex).test(value));
-    console.log(isValid);
+    // console.log(isValid);
   };
 
   // inline-Callback fn validate()
