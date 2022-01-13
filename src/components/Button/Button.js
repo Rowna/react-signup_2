@@ -10,8 +10,8 @@ const Button = (props) => {
         // <div className={props.className}> 
         //      <button className={props.disabled ? 'button' : 'button enabled'}>{btnTitle}</button>
         // </div>
-        <div className={props.className}>  
-            <button onClick={props.onClickHandler} className='button' disabled={props.disabled}>{props.btnTitle}</button>
+        <div>   
+            <button onClick={props.onClickHandler} className={props.className} disabled={props.disabled}>{props.btnTitle}</button>
         </div> 
     )
 } 

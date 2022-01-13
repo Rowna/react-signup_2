@@ -28,11 +28,6 @@
 .country-input {
     grid-column: 3 / -1;
 }
-.btn {
-    width: 90%;
-    margin-top: 3rem;
-    margin-bottom: 4rem;
-}
 p {
     margin: 0;
     margin-top: 8px;

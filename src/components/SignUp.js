@@ -9,40 +9,42 @@ import "./SignUp.css";
 import useFormInput from "./helper/useFormInput";
 import axios from "axios";
 
-
-
 const SignUp = (props) => {
   // useFormInput() selbst-erstellter Hook
-  const [firstNameValue, firstNameIsValid, onFirstNameChange] = useFormInput("[\\w-]{3}");
-  const [lastNameValue, lastNameIsValid, onLastNameChange] = useFormInput("[\\w-]{3}");
+  const [firstNameValue, firstNameIsValid, onFirstNameChange] = useFormInput("[\\a-zA-Zء-ي]{2}");
+  const [lastNameValue, lastNameIsValid, onLastNameChange] = useFormInput("[\\a-zA-Zء-ي]{2}");
   const [emailValue, emailIsValid, onEmailChange] = useFormInput("^[\\a-zA-Z0-9._-]+@[\\a-zA-Z0-9.-]+.[\\a-zA-Z]$"); // lea@gmx.de
-  const [streetValue, streetIsValid, onStreetChange] = useFormInput("[\\w-]{3}");
+  const [streetValue, streetIsValid, onStreetChange] = useFormInput("[\\a-zA-Zء-ي]{3}");
   const [hnrValue, hnrIsValid, onHnrChange] = useFormInput("^[\\d][\\w]*$");
   const [plzValue, plzIsValid, onPlzChange] = useFormInput("[\\d-]{1}");
-  const [countryValue, countryIsValid, onCountryChange] = useFormInput("[\\w-]{3}");
+  const [countryValue, countryIsValid, onCountryChange] = useFormInput("[\\a-zA-Zء-ي]{3}");
 
   const [formIsValid, setFormIsValid] = useState(false);
   const [imageUrl, setImageUrl] = useState("");
-  // const [error, setError] = useState(false);
+  const [istAngelegt, setIstAngelegt] = useState(false);
+  const [istBearbeitetClicked, setIsBearbeitetClicked] = useState(false);
 
   // für RandomUser
   const randomUser = () => {
-    axios.get("https://randomuser.me/api/").then(res => res.data).then((data) => {
-      console.log(data.results[0])
-      onEmailChange(data.results[0].email)
-      onFirstNameChange(data.results[0].name.first)
-      onLastNameChange(data.results[0].name.last)
-      onStreetChange(data.results[0].location.street.name)
-      onHnrChange(data.results[0].location.street.number)
-      onPlzChange(data.results[0].location.postcode)
-      onCountryChange(data.results[0].location.country)
-      setImageUrl(data.results[0].picture.medium);
-    });
+    axios
+      .get("https://randomuser.me/api/")
+      .then((res) => res.data)
+      .then((data) => {
+        console.log(data.results[0]);
+        onEmailChange(data.results[0].email);
+        onFirstNameChange(data.results[0].name.first);
+        onLastNameChange(data.results[0].name.last);
+        onStreetChange(data.results[0].location.street.name);
+        onHnrChange(data.results[0].location.street.number);
+        onPlzChange(data.results[0].location.postcode);
+        onCountryChange(data.results[0].location.country);
+        setImageUrl(data.results[0].picture.medium);
+      });
   };
 
   // für setFormIsValid
   useEffect(() => {
-  // console.log(firstNameValue)
+    // console.log(formIsValid)
     setFormIsValid(
       firstNameIsValid &&
         lastNameIsValid &&
@@ -60,47 +62,57 @@ const SignUp = (props) => {
     hnrIsValid,
     plzIsValid,
     countryIsValid,
-  ]);
+  ]); 
 
-
-
-  // Für btn-ChnageHandler
-  const clickHandler = (event) => {
+  const clickGenerierenHandler = (event) => {
     event.preventDefault();
     randomUser();
-
-    
-
-
-    // props.onLogin(
-    //   onFirstNameChange,
-    //   onLastNameChange,
-    //   onEmailChange,
-    //   onHnrChange,
-    //   onPlzChange, 
-    //   onCountryChange
-    // );
   };
 
-  /* 
-  useEffect(() => {
-    setError(
+  const clickAnlegenHandler = (e) => {
+    e.preventDefault();
+    const data = {
+      firstNameValue,
+      lastNameValue,
+      emailValue,
+      streetValue,
+      hnrValue,
+      plzValue,
+      countryValue,
+    };
 
-    )
-  }, [!formIsValid]);
+    // if (Object.keys(data).length <=7) {
+    //   setIstAngelegt(true); 
+    //   console.log(setIstAngelegt);
+    //   // console.log(object)
+    // }
+    localStorage.setItem("UserData", JSON.stringify(data));
+    setIstAngelegt(true);
+    console.log(data)
+    //to get the Object from localStorage
+    //console.log(JSON.parse(localStorage.getItem("userData")))
+  };
 
-  const errorHandler = () => {
-    if (firstNameIsValid) {
-      setError("Error");
-    }
-  }
-  console.log(errorHandler)
-*/
+  const clickBearbeitenHandler = (e) => {
+    e.preventDefault();
+    setIsBearbeitetClicked(true);
+    // const extractedData = "";
+    const extractedData = JSON.parse(localStorage.getItem("userData"));
 
+    console.log(extractedData); 
+  };
+
+  // useEffect(() => {
+  //   // storing input name
+  //   localStorage.setItem(firstNameValue, JSON.stringify(firstNameValue));
+
+  // }, [firstNameValue]);
+
+  // console.log(firstNameValue)
 
   return (
     <FormBox>
-      <ProfileImage url={imageUrl}/>
+      <ProfileImage url={imageUrl} />
       <div className="input-container">
         <InputWrapper gridPosition="firstname-input">
           <Input
@@ -109,11 +121,9 @@ const SignUp = (props) => {
             value={firstNameValue}
             placeholder="Vorname"
             onChangeHandler={(event) => onFirstNameChange(event.target.value)}
-            // hasError={errors.firstname}
-
+            hasError={!firstNameIsValid}
           />
-          {/* {formIsValid === false && <p>Vorname ist erforderlich</p> } */}
-
+          {!firstNameIsValid && <p>Vorname ist erforderlich</p>}
           {/* <Error errorsMessage={errors} name="firstname" /> */}
         </InputWrapper>
 
@@ -124,8 +134,10 @@ const SignUp = (props) => {
             value={lastNameValue}
             placeholder="Nachname"
             onChangeHandler={(event) => onLastNameChange(event.target.value)}
+            hasError={!lastNameIsValid}
             // hasError={errors.lastname}
           />
+          {!lastNameIsValid && <p>Vorname ist erforderlich</p>}
           {/* <Error errorsMessage={errors} name="lastname" /> */}
         </InputWrapper>
 
@@ -136,8 +148,9 @@ const SignUp = (props) => {
             value={emailValue}
             placeholder="E-Mail-Adresse"
             onChangeHandler={(event) => onEmailChange(event.target.value)}
-            // hasError={errors.email}
+            hasError={!emailIsValid}
           />
+          {!emailIsValid && <p>Email ist erforderlich</p>}
           {/* <Error errorsMessage={errors} name="email" /> */}
         </InputWrapper>
 
@@ -148,8 +161,9 @@ const SignUp = (props) => {
             value={streetValue}
             placeholder="Straße"
             onChangeHandler={(event) => onStreetChange(event.target.value)}
-            // hasError={errors.street}
+            hasError={!streetIsValid}
           />
+          {!streetIsValid && <p>Straße ist erforderlich</p>}
           {/* <Error errorsMessage={errors} name="street" /> */}
         </InputWrapper>
 
@@ -160,8 +174,9 @@ const SignUp = (props) => {
             value={hnrValue}
             placeholder="Hsnr."
             onChangeHandler={(event) => onHnrChange(event.target.value)}
-            // hasError={errors.hnr}
+            hasError={!hnrIsValid}
           />
+          {!hnrIsValid && <p> Hnr. ist erforderlich</p>}
           {/* <Error errorsMessage={errors} name="hnr" /> */}
         </InputWrapper>
 
@@ -172,31 +187,41 @@ const SignUp = (props) => {
             value={plzValue}
             placeholder="PLZ"
             onChangeHandler={(event) => onPlzChange(event.target.value)}
-            // hasError={errors.postcode}
+            hasError={!plzIsValid}
           />
+          {!plzIsValid && <p>PLZ ist erforderlich</p>}
           {/* <Error errorsMessage={errors} name="postcode" /> */}
         </InputWrapper>
 
         <InputWrapper gridPosition="country-input">
-          <Input 
+          <Input
             name="country"
             type="text"
             value={countryValue}
             placeholder="Ort"
             onChangeHandler={(event) => onCountryChange(event.target.value)}
-            // hasError={errors.country}
+            hasError={!countryIsValid}
           />
+          {!countryIsValid && <p>Ort ist erforderlich</p>}
           {/* <Error errorsMessage={errors} name="country" /> */}
         </InputWrapper>
       </div>
 
-      <Button btnTitle={"User generieren"} onClickHandler={clickHandler} className="btn" disabled={!formIsValid} />
+      <div className="btn_container">
+        { istAngelegt ? 
+        ( <Button btnTitle={"Bearbeiten"} onClickHandler={clickBearbeitenHandler} className="btn edit-user" /> ) : 
+        ( <Button btnTitle={"User generieren"} onClickHandler={clickGenerierenHandler} className="btn generate-user" /> )
+        }
 
-      {/* <Button btnTitle={"Bearbeiten"} className="btn" disabled={!clickHandler} /> */}
-      {/* <Button btnTitle={"User anlegen"} className="btn" disabled={!clickHandler} /> */}
-    
+        { istBearbeitetClicked ? 
+        ( <Button btnTitle={"Speichern"} onClickHandler={clickAnlegenHandler} className="btn create-user" />) ? 
+        ( <Button btnTitle={"Abbrechen"} className="btn exit-btn" />) : 
+          ( <Button btnTitle={"User anlegen"} onClickHandler={clickAnlegenHandler} className="btn create-user" /> ) : 
+          ( <Button btnTitle={"User anlegen"} onClickHandler={clickAnlegenHandler} className="btn create-user" disabled={!formIsValid} /> )
+        }
+
+      </div>
     </FormBox>
   );
 };
-
 export default SignUp;

@@ -1,20 +1,19 @@
 import { useState, useEffect } from "react";
 
-// diese Hook muss ein Array aus drei Werten zurückgeben:
+// diese Hook muss ein Array aus drei Elemente zurückgeben:
     // value ist für firstNameValue
     // isValid ist für firstNameIsValid
     // changeHandler() ist für onFirstNameChange
 const useFormInput = (regex) => {
-  const [value, setValue] = useState(""); // Value Sammler
-  const [isValid, setIsValid] = useState(); // Value Prüfer
+  const [value, setValue] = useState(""); 
+  const [isValid, setIsValid] = useState(true); 
 
-
-  const changeHandler = (value) => {  // changeHandler() für den value und setValue
+  const changeHandler = (value) => {  
     setValue(value);
-    console.log(value)
+    // console.log(value)
+
   };
 
-  // validate()
   const validate = () => {
     setIsValid(new RegExp(regex).test(value));
     // console.log(isValid);
@@ -22,10 +21,11 @@ const useFormInput = (regex) => {
 
   // inline-Callback fn validate()
   useEffect(() => {
-    validate();
+    value && validate();
     // IMMER wenn value sich ändert oder upgedated wird, dann wird es validate() upgedated
   }, [value]);
 
+  // als Elemente in Array zurückgegeben
   return [value, isValid, changeHandler];
 };
 
