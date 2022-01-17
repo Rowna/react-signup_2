@@ -1,17 +1,24 @@
 .img-container {
+  margin-top: 3rem;
   position: relative;
-  width: 300px;
-  height: 300px;
+  width: 400px;
+  height: 400px;
+  border-radius: 50%;
+  
 }
-
-input[type="file"] {
-  /* color: transparent; */
-  /* visibility: hidden; */
-  /* position: absolute; */
+.profile-pic {
+  border: 12px solid #d7d8dd;
   cursor: pointer;
-  /* width: 100%;
+  width: 400px;
+  height: 400px;
+  border-radius: 50%;
+}
+/* 
+input[type="file"] {
+  cursor: pointer;
+   width: 100%;
     height: 100%;
-    font-size: 4rem; */
+    font-size: 4rem; 
 }
 
 .file-input::-webkit-file-upload-button {
@@ -23,9 +30,11 @@ input[type="file"] {
   height: 100%;
   border-radius: 50%;
   border: 12px solid #d7d8dd;
-    /* background: url("/src/images/profile.png"); */
+    /* background: url("/src/images/profile.png"); 
     background-size: contain; 
 }
+*/
+
 /* 
 .file-label-input {
   position: absolute;

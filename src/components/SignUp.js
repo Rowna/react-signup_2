@@ -11,13 +11,19 @@ import axios from "axios";
 
 const SignUp = (props) => {
   // useFormInput() selbst-erstellter Hook
-  const [firstNameValue, firstNameIsValid, onFirstNameChange] = useFormInput("[\\a-zA-Zء-ي]{2}");
-  const [lastNameValue, lastNameIsValid, onLastNameChange] = useFormInput("[\\a-zA-Zء-ي]{2}");
-  const [emailValue, emailIsValid, onEmailChange] = useFormInput( "^[\\a-zA-Z0-9._-]+@[\\a-zA-Z0-9.-]+.[\\a-zA-Z]$" ); // lea@gmx.de
-  const [streetValue, streetIsValid, onStreetChange] = useFormInput("[\\a-zA-Zء-ي]{3}");
+  const [firstNameValue, firstNameIsValid, onFirstNameChange] =
+    useFormInput("[\\a-zA-Zء-ي]{2}");
+  const [lastNameValue, lastNameIsValid, onLastNameChange] =
+    useFormInput("[\\a-zA-Zء-ي]{2}");
+  const [emailValue, emailIsValid, onEmailChange] = useFormInput(
+    "^[\\a-zA-Z0-9._-]+@[\\a-zA-Z0-9.-]+.[\\a-zA-Z]$"
+  ); // lea@gmx.de
+  const [streetValue, streetIsValid, onStreetChange] =
+    useFormInput("[\\a-zA-Zء-ي]{3}");
   const [hnrValue, hnrIsValid, onHnrChange] = useFormInput("^[\\d][\\w]*$");
   const [plzValue, plzIsValid, onPlzChange] = useFormInput("[\\d-]{1}");
-  const [countryValue, countryIsValid, onCountryChange] = useFormInput("[\\a-zA-Zء-ي]{3}");
+  const [countryValue, countryIsValid, onCountryChange] =
+    useFormInput("[\\a-zA-Zء-ي]{3}");
 
   const [formIsValid, setFormIsValid] = useState(false);
   const [imageUrl, setImageUrl] = useState("");
@@ -40,7 +46,7 @@ const SignUp = (props) => {
         onCountryChange(data.results[0].location.country);
         setImageUrl(data.results[0].picture.medium);
       });
-      // console.log(setImageUrl)
+    // console.log(setImageUrl)
   };
 
   // für setFormIsValid
@@ -81,6 +87,7 @@ const SignUp = (props) => {
       plzValue,
       countryValue,
     };
+    /* 
     axios
       .get(
         "http://localhost:5000/api?firstName=" +
@@ -92,7 +99,7 @@ const SignUp = (props) => {
       .then((data) => {
         console.log(data.message);
       });
-
+    */
     // if (Object.keys(data).length <=7) {
     //   setIstAngelegt(true);
     //   console.log(setIstAngelegt);
@@ -115,23 +122,24 @@ const SignUp = (props) => {
 
     console.log(extractedData);
   };
-
+ /* 
   // const fileSelectedHandler = (e) => {
-    // setImageUrl(e.target.files[0]);
-    // console.log(setImageUrl);
+  // setImageUrl(e.target.files[0]);
+  // console.log(setImageUrl);
   // };
 
   // useEffect(() => {
   //   // storing input name
   //   localStorage.setItem(firstNameValue, JSON.stringify(firstNameValue));
- 
+
   // }, [firstNameValue]);
 
   // console.log(firstNameValue)
-
-  return (
+*/
+  
+return (
     <FormBox>
-      <ProfileImage url={imageUrl}  />
+      <ProfileImage url={imageUrl} />
       <div className="input-container">
         <InputWrapper gridPosition="firstname-input">
           <Input
@@ -236,12 +244,15 @@ const SignUp = (props) => {
       <div className="btn_container">
         {istAngelegt ? (
           <>
-           {/* {istBearbeitetClicked ? */}
-              <Button btnTitle={"Bearbeiten"} onClickHandler={clickBearbeitenHandler} className="btn edit-user" />
-
-           {/* <Button btnTitle={"Abbrechen"} className="btn exit-btn" /> */}
-
-           {/* } */}
+            {istBearbeitetClicked ? (
+              <Button btnTitle={"Speichern"} className="btn save-user" />
+            ) : (
+              <Button
+                btnTitle={"Bearbeiten"}
+                onClickHandler={clickBearbeitenHandler}
+                className="btn edit-user"
+              />
+            )}
             <Button btnTitle={"Abbrechen"} className="btn exit-btn" />
           </>
         ) : (

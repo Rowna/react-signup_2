@@ -42,11 +42,16 @@
 }
 .exit-btn {
     border: solid 3.5px #10AC84;
-    color: #10AC84; 
     background-color: #ffffff;
+    color: #10AC84; 
 }
 .edit-user {
+    border: solid 3.5px #10AC84;
     background-color: #10AC84;
     color: #ffffff;
+}
+.save-user {
     border: solid 3.5px #10AC84;
+    background-color: #10AC84;
+    color: #ffffff;
 }
