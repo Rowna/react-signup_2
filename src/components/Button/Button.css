@@ -40,11 +40,13 @@
     border: none;
     background-color: #10AC84;
 }
-.edit-user {
+.exit-btn {
     border: solid 3.5px #10AC84;
     color: #10AC84; 
     background-color: #ffffff;
 }
-.exit-btn {
-    
+.edit-user {
+    background-color: #10AC84;
+    color: #ffffff;
+    border: solid 3.5px #10AC84;
 }

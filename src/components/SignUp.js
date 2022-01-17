@@ -13,7 +13,7 @@ const SignUp = (props) => {
   // useFormInput() selbst-erstellter Hook
   const [firstNameValue, firstNameIsValid, onFirstNameChange] = useFormInput("[\\a-zA-Zء-ي]{2}");
   const [lastNameValue, lastNameIsValid, onLastNameChange] = useFormInput("[\\a-zA-Zء-ي]{2}");
-  const [emailValue, emailIsValid, onEmailChange] = useFormInput("^[\\a-zA-Z0-9._-]+@[\\a-zA-Z0-9.-]+.[\\a-zA-Z]$"); // lea@gmx.de
+  const [emailValue, emailIsValid, onEmailChange] = useFormInput( "^[\\a-zA-Z0-9._-]+@[\\a-zA-Z0-9.-]+.[\\a-zA-Z]$" ); // lea@gmx.de
   const [streetValue, streetIsValid, onStreetChange] = useFormInput("[\\a-zA-Zء-ي]{3}");
   const [hnrValue, hnrIsValid, onHnrChange] = useFormInput("^[\\d][\\w]*$");
   const [plzValue, plzIsValid, onPlzChange] = useFormInput("[\\d-]{1}");
@@ -22,9 +22,9 @@ const SignUp = (props) => {
   const [formIsValid, setFormIsValid] = useState(false);
   const [imageUrl, setImageUrl] = useState("");
   const [istAngelegt, setIstAngelegt] = useState(false);
+  const [isInputDisabled, setIsInputDisabled] = useState(false);
   const [istBearbeitetClicked, setIsBearbeitetClicked] = useState(false);
 
-  // für RandomUser
   const randomUser = () => {
     axios
       .get("https://randomuser.me/api/")
@@ -40,6 +40,7 @@ const SignUp = (props) => {
         onCountryChange(data.results[0].location.country);
         setImageUrl(data.results[0].picture.medium);
       });
+      // console.log(setImageUrl)
   };
 
   // für setFormIsValid
@@ -62,7 +63,7 @@ const SignUp = (props) => {
     hnrIsValid,
     plzIsValid,
     countryIsValid,
-  ]); 
+  ]);
 
   const clickGenerierenHandler = (event) => {
     event.preventDefault();
@@ -80,15 +81,27 @@ const SignUp = (props) => {
       plzValue,
       countryValue,
     };
+    axios
+      .get(
+        "http://localhost:5000/api?firstName=" +
+          firstNameValue +
+          "&lastName=" +
+          lastNameValue
+      )
+      .then((res) => res.data)
+      .then((data) => {
+        console.log(data.message);
+      });
 
     // if (Object.keys(data).length <=7) {
-    //   setIstAngelegt(true); 
+    //   setIstAngelegt(true);
     //   console.log(setIstAngelegt);
     //   // console.log(object)
     // }
-    localStorage.setItem("UserData", JSON.stringify(data));
+    localStorage.setItem("userData", JSON.stringify(data));
     setIstAngelegt(true);
-    console.log(data)
+    console.log(data);
+    setIsInputDisabled(true);
     //to get the Object from localStorage
     //console.log(JSON.parse(localStorage.getItem("userData")))
   };
@@ -97,26 +110,33 @@ const SignUp = (props) => {
     e.preventDefault();
     setIsBearbeitetClicked(true);
     // const extractedData = "";
+    setIsInputDisabled(false);
     const extractedData = JSON.parse(localStorage.getItem("userData"));
 
-    console.log(extractedData); 
+    console.log(extractedData);
   };
+
+  // const fileSelectedHandler = (e) => {
+    // setImageUrl(e.target.files[0]);
+    // console.log(setImageUrl);
+  // };
 
   // useEffect(() => {
   //   // storing input name
   //   localStorage.setItem(firstNameValue, JSON.stringify(firstNameValue));
-
+ 
   // }, [firstNameValue]);
 
   // console.log(firstNameValue)
 
   return (
     <FormBox>
-      <ProfileImage url={imageUrl} />
+      <ProfileImage url={imageUrl}  />
       <div className="input-container">
         <InputWrapper gridPosition="firstname-input">
           <Input
             type="text"
+            isInputDisabled={isInputDisabled}
             name="firstname"
             value={firstNameValue}
             placeholder="Vorname"
@@ -129,6 +149,7 @@ const SignUp = (props) => {
 
         <InputWrapper gridPosition="lastname-input">
           <Input
+            isInputDisabled={isInputDisabled}
             type="text"
             name="lastname"
             value={lastNameValue}
@@ -144,6 +165,7 @@ const SignUp = (props) => {
         <InputWrapper gridPosition="email-input">
           <Input
             type="email"
+            isInputDisabled={isInputDisabled}
             name="email"
             value={emailValue}
             placeholder="E-Mail-Adresse"
@@ -157,6 +179,7 @@ const SignUp = (props) => {
         <InputWrapper gridPosition="street-input">
           <Input
             type="text"
+            isInputDisabled={isInputDisabled}
             name="street"
             value={streetValue}
             placeholder="Straße"
@@ -170,6 +193,7 @@ const SignUp = (props) => {
         <InputWrapper gridPosition="hnr-input">
           <Input
             type="text"
+            isInputDisabled={isInputDisabled}
             name="hnr"
             value={hnrValue}
             placeholder="Hsnr."
@@ -183,6 +207,7 @@ const SignUp = (props) => {
         <InputWrapper gridPosition="postcode-input">
           <Input
             type="number"
+            isInputDisabled={isInputDisabled}
             name="postcode"
             value={plzValue}
             placeholder="PLZ"
@@ -196,6 +221,7 @@ const SignUp = (props) => {
         <InputWrapper gridPosition="country-input">
           <Input
             name="country"
+            isInputDisabled={isInputDisabled}
             type="text"
             value={countryValue}
             placeholder="Ort"
@@ -208,20 +234,36 @@ const SignUp = (props) => {
       </div>
 
       <div className="btn_container">
-        { istAngelegt ? 
-        ( <Button btnTitle={"Bearbeiten"} onClickHandler={clickBearbeitenHandler} className="btn edit-user" /> ) : 
-        ( <Button btnTitle={"User generieren"} onClickHandler={clickGenerierenHandler} className="btn generate-user" /> )
-        }
+        {istAngelegt ? (
+          <>
+           {/* {istBearbeitetClicked ? */}
+              <Button btnTitle={"Bearbeiten"} onClickHandler={clickBearbeitenHandler} className="btn edit-user" />
 
-        { istBearbeitetClicked ? 
-        ( <Button btnTitle={"Speichern"} onClickHandler={clickAnlegenHandler} className="btn create-user" />) ? 
-        ( <Button btnTitle={"Abbrechen"} className="btn exit-btn" />) : 
-          ( <Button btnTitle={"User anlegen"} onClickHandler={clickAnlegenHandler} className="btn create-user" /> ) : 
-          ( <Button btnTitle={"User anlegen"} onClickHandler={clickAnlegenHandler} className="btn create-user" disabled={!formIsValid} /> )
-        }
+           {/* <Button btnTitle={"Abbrechen"} className="btn exit-btn" /> */}
 
+           {/* } */}
+            <Button btnTitle={"Abbrechen"} className="btn exit-btn" />
+          </>
+        ) : (
+          <>
+            <Button
+              btnTitle={"User generieren"}
+              onClickHandler={clickGenerierenHandler}
+              className="btn generate-user"
+            />
+            <Button
+              btnTitle={"User anlegen"}
+              onClickHandler={clickAnlegenHandler}
+              className="btn create-user"
+              disabled={!formIsValid}
+            />
+          </>
+        )}
+
+        {/* {isTrue ? <></> : isTrue2 ? <></>: <></>} */}
       </div>
     </FormBox>
   );
 };
+
 export default SignUp;
