@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import FormBox from "./FormBox";
 import ProfileImage from "./ProfileImage/ProfileImage";
-import InputWrapper from "./Inputwrapper/Inputwrapper";
+import InputWrapper from "./Inputwrapper/InputWrapper";
 import Input from "./Inputwrapper/Input/Input";
 // import Error from "./Error/Error";
 import Button from "./Button/Button";
@@ -192,8 +192,8 @@ return (
       <ProfileImage url={imageUrl} /> 
       <div className="input-container">
         <InputWrapper gridPosition="firstname-input">
-        <useInputInfos />
-        {/* {useInputInfos.inputs[0]} */}
+        {/* <useInputInfos /> */}
+        {useInputInfos.inputs[0]}
           {!firstNameIsValid && <p>Vorname ist erforderlich</p>}
           {/* <Error errorsMessage={errors} name="firstname" /> */}
         </InputWrapper>

@@ -2,7 +2,7 @@ import React from 'react';
 // import './Input/Input.css';
 import '../SignUp.css';
 
-const Inputwrapper = (props) => {
+const InputWrapper = (props) => {
     
     return (
         <div className={props.gridPosition}>
@@ -11,4 +11,4 @@ const Inputwrapper = (props) => {
     )
 }
 
-export default Inputwrapper;
+export default InputWrapper;
