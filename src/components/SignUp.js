@@ -8,22 +8,17 @@ import Button from "./Button/Button";
 import "./SignUp.css";
 import useFormInput from "./helper/useFormInput";
 import axios from "axios";
+import useInputInfos from "./helper/useInputInfos";
 
 const SignUp = (props) => {
   // useFormInput() selbst-erstellter Hook
-  const [firstNameValue, firstNameIsValid, onFirstNameChange] =
-    useFormInput("[\\a-zA-Zء-ي]{2}");
-  const [lastNameValue, lastNameIsValid, onLastNameChange] =
-    useFormInput("[\\a-zA-Zء-ي]{2}");
-  const [emailValue, emailIsValid, onEmailChange] = useFormInput(
-    "^[\\a-zA-Z0-9._-]+@[\\a-zA-Z0-9.-]+.[\\a-zA-Z]$"
-  ); // lea@gmx.de
-  const [streetValue, streetIsValid, onStreetChange] =
-    useFormInput("[\\a-zA-Zء-ي]{3}");
+  const [firstNameValue, firstNameIsValid, onFirstNameChange] = useFormInput("[\\a-zA-Zء-ي]{2}");
+  const [lastNameValue, lastNameIsValid, onLastNameChange] = useFormInput("[\\a-zA-Zء-ي]{2}");
+  const [emailValue, emailIsValid, onEmailChange] = useFormInput("^[\\a-zA-Z0-9._-]+@[\\a-zA-Z0-9.-]+.[\\a-zA-Z]$"); // lea@gmx.de
+  const [streetValue, streetIsValid, onStreetChange] = useFormInput("[\\a-zA-Zء-ي]{3}");
   const [hnrValue, hnrIsValid, onHnrChange] = useFormInput("^[\\d][\\w]*$");
   const [plzValue, plzIsValid, onPlzChange] = useFormInput("[\\d-]{1}");
-  const [countryValue, countryIsValid, onCountryChange] =
-    useFormInput("[\\a-zA-Zء-ي]{3}");
+  const [countryValue, countryIsValid, onCountryChange] = useFormInput("[\\a-zA-Zء-ي]{3}");
 
   const [formIsValid, setFormIsValid] = useState(false);
   const [imageUrl, setImageUrl] = useState("");
@@ -122,6 +117,7 @@ const SignUp = (props) => {
 
     console.log(extractedData);
   };
+
  /* 
   // const fileSelectedHandler = (e) => {
   // setImageUrl(e.target.files[0]);
@@ -136,42 +132,81 @@ const SignUp = (props) => {
 
   // console.log(firstNameValue)
 */
-  
+ 
+/* */
+// const inputInfos = [
+//   { 
+//     id:1, 
+//     type:"text", 
+//     isInputDisabled: props.isInputDisabled, 
+//     name:"firstname", 
+//     value: props.firstNameValue, 
+//     placeholder:"Vorname", 
+//     onChangeHandler: function(event) { onFirstNameChange(event.target.value)}, 
+//     hasError: firstNameIsValid == false, 
+//   },
+//   { 
+//     id:2, 
+//     type:"text", 
+//     isInputDisabled: props.isInputDisabled, 
+//     name:"lastname", 
+//     value: props.lastNameValue, 
+//     placeholder:"Nachname", 
+//     onChangeHandler: function(event) { onLastNameChange(event.target.value)}, 
+//     hasError: lastNameIsValid == false, 
+//   },
+//   { 
+//     id: 3,
+//     type:"email", 
+//     isInputDisabled: props.isInputDisabled, 
+//     name:"email", 
+//     value: props.emailValue, 
+//     placeholder:"E-Mail-Adresse", 
+//     onChangeHandler: function(event) { onEmailChange(event.target.value)}, 
+//     hasError: lastNameIsValid == false,
+//   },
+//   {
+
+//   },
+
+// ]
+
+
+
+// const inputs = inputInfos.map(function(input) {
+//   return <Input
+//     key={input.id}
+//     type={input.type}
+//     isInputDisabled={input.isInputDisabled}
+//     name={input.name}
+//     value={input.value}
+//     placeholder={input.placeholder}
+//     onChangeHandler={input.onChangeHandler}
+//     hasError={input.hasError}
+//   />
+// });
+
+
 return (
     <FormBox>
-      <ProfileImage url={imageUrl} />
+      <ProfileImage url={imageUrl} /> 
       <div className="input-container">
         <InputWrapper gridPosition="firstname-input">
-          <Input
-            type="text"
-            isInputDisabled={isInputDisabled}
-            name="firstname"
-            value={firstNameValue}
-            placeholder="Vorname"
-            onChangeHandler={(event) => onFirstNameChange(event.target.value)}
-            hasError={!firstNameIsValid}
-          />
+        <useInputInfos />
+        {/* {useInputInfos.inputs[0]} */}
           {!firstNameIsValid && <p>Vorname ist erforderlich</p>}
           {/* <Error errorsMessage={errors} name="firstname" /> */}
         </InputWrapper>
 
         <InputWrapper gridPosition="lastname-input">
-          <Input
-            isInputDisabled={isInputDisabled}
-            type="text"
-            name="lastname"
-            value={lastNameValue}
-            placeholder="Nachname"
-            onChangeHandler={(event) => onLastNameChange(event.target.value)}
-            hasError={!lastNameIsValid}
-            // hasError={errors.lastname}
-          />
+          {/* {useInputInfos.inputs ? useInputInfos.inputs[1] : useInputInfos.inputs} */}
           {!lastNameIsValid && <p>Vorname ist erforderlich</p>}
           {/* <Error errorsMessage={errors} name="lastname" /> */}
         </InputWrapper>
 
         <InputWrapper gridPosition="email-input">
-          <Input
+        {/* {useInputInfos.inputs ? useInputInfos.inputs[2] : useInputInfos.inputs} */}
+          {/* <Input
             type="email"
             isInputDisabled={isInputDisabled}
             name="email"
@@ -179,13 +214,13 @@ return (
             placeholder="E-Mail-Adresse"
             onChangeHandler={(event) => onEmailChange(event.target.value)}
             hasError={!emailIsValid}
-          />
+          /> */}
           {!emailIsValid && <p>Email ist erforderlich</p>}
           {/* <Error errorsMessage={errors} name="email" /> */}
         </InputWrapper>
 
         <InputWrapper gridPosition="street-input">
-          <Input
+          {/* <Input
             type="text"
             isInputDisabled={isInputDisabled}
             name="street"
@@ -193,7 +228,7 @@ return (
             placeholder="Straße"
             onChangeHandler={(event) => onStreetChange(event.target.value)}
             hasError={!streetIsValid}
-          />
+          /> */}
           {!streetIsValid && <p>Straße ist erforderlich</p>}
           {/* <Error errorsMessage={errors} name="street" /> */}
         </InputWrapper>

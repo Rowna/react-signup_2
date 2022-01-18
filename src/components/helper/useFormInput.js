@@ -11,7 +11,6 @@ const useFormInput = (regex) => {
   const changeHandler = (value) => {  
     setValue(value);
     // console.log(value)
-
   };
 
   const validate = () => {
