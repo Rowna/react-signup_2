@@ -193,12 +193,13 @@ const SignUp = (props) => {
     
     // styling vom input-Felder selectieren und dann zu Strichen ändern:
     const inputPath = document.querySelectorAll("input");
+    const imgProfilePath = document.querySelector("img[class=profile-pic]");
     console.log(inputPath);
     for (let i = 0; i < inputPath.length; i++) {
       inputPath[i].style.color =  "red";
       inputPath[i].style.border = "solid 1px red";
-
     }
+    imgProfilePath.style.border = "solid 5px red";
     // inputPath.addEventListener("load", function () {});
 
   };
