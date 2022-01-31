@@ -7,55 +7,62 @@ import Input from "./Inputwrapper/Input/Input";
 import Button from "./Button/Button";
 import "./SignUp.css";
 import useFormInput from "./helper/useFormInput";
+// import useUploadImage from "./helper/useUploadImage";
 import axios from "axios";
-import useInputInfos from "./helper/useInputInfos";
+// import InputEdit from "./Inputwrapper/Input/InputEdit";
+// import useInputInfos from "./helper/useInputInfos";
 
 const SignUp = (props) => {
   // useFormInput() selbst-erstellter Hook
-  const [firstNameValue, firstNameIsValid, onFirstNameChange] = useFormInput("[\\a-zA-Zء-ي]{2}");
-  const [lastNameValue, lastNameIsValid, onLastNameChange] = useFormInput("[\\a-zA-Zء-ي]{2}");
-  const [emailValue, emailIsValid, onEmailChange] = useFormInput("^[\\a-zA-Z0-9._-]+@[\\a-zA-Z0-9.-]+.[\\a-zA-Z]$"); // lea@gmx.de
-  const [streetValue, streetIsValid, onStreetChange] = useFormInput("[\\a-zA-Zء-ي]{3}");
+  const [firstNameValue, firstNameIsValid, onFirstNameChange] =
+    useFormInput("[\\a-zA-Zء-ي]{2}");
+  const [lastNameValue, lastNameIsValid, onLastNameChange] =
+    useFormInput("[\\a-zA-Zء-ي]{2}");
+  const [emailValue, emailIsValid, onEmailChange] = useFormInput(
+    "^[\\a-zA-Z0-9._-]+@[\\a-zA-Z0-9.-]+.[\\a-zA-Z]$"
+  ); // lea@gmx.de
+  const [streetValue, streetIsValid, onStreetChange] =
+    useFormInput("[\\a-zA-Zء-ي]{3}");
   const [hnrValue, hnrIsValid, onHnrChange] = useFormInput("^[\\d][\\w]*$");
-  const [plzValue, plzIsValid, onPlzChange] = useFormInput("[\\d-]{1}");
-  const [countryValue, countryIsValid, onCountryChange] = useFormInput("[\\a-zA-Zء-ي]{3}");
+  const [plzValue, plzIsValid, onPlzChange] = useFormInput("[\\a-zA-Z0-9]{3}");
+  const [countryValue, countryIsValid, onCountryChange] = useFormInput(
+    "[\\0-9a-zA-Zء-ي]{3}"
+  );
 
   const [formIsValid, setFormIsValid] = useState(false);
+  // const [imageUrl, setImageUrl] = useUploadImage("");
   const [imageUrl, setImageUrl] = useState("");
   const [istAngelegt, setIstAngelegt] = useState(false);
   const [isInputDisabled, setIsInputDisabled] = useState(false);
-  const [istBearbeitetClicked, setIsBearbeitetClicked] = useState(false);
+  const [istGenerierenClicked, setGenerierenClicked] = useState(false);
 
-  const randomUser = () => {
-    axios
-      .get("https://randomuser.me/api/")
-      .then((res) => res.data)
-      .then((data) => {
-        console.log(data.results[0]);
-        onEmailChange(data.results[0].email);
-        onFirstNameChange(data.results[0].name.first);
-        onLastNameChange(data.results[0].name.last);
-        onStreetChange(data.results[0].location.street.name);
-        onHnrChange(data.results[0].location.street.number);
-        onPlzChange(data.results[0].location.postcode);
-        onCountryChange(data.results[0].location.country);
-        setImageUrl(data.results[0].picture.medium);
-      });
-    // console.log(setImageUrl)
-  };
+  const [istBearbeitetClicked, setIsBearbeitetClicked] = useState(false);
 
   // für setFormIsValid
   useEffect(() => {
     // console.log(formIsValid)
+    // console.log("Validate!");
     setFormIsValid(
-      firstNameIsValid &&
+      firstNameValue &&
+        firstNameIsValid &&
+        lastNameValue &&
         lastNameIsValid &&
+        emailValue &&
         emailIsValid &&
+        streetValue &&
         streetIsValid &&
+        hnrValue &&
         hnrIsValid &&
+        plzValue &&
         plzIsValid &&
-        countryIsValid
+        countryValue &&
+        countryIsValid &&
+        imageUrl !== ""
     );
+    // [] means: Wenn every Keystroke changed
+    return () => {
+      // console.log("CLEANUP");
+    };
   }, [
     firstNameIsValid,
     lastNameIsValid,
@@ -64,61 +71,139 @@ const SignUp = (props) => {
     hnrIsValid,
     plzIsValid,
     countryIsValid,
+    imageUrl,
   ]);
 
-  const clickGenerierenHandler = (event) => {
-    event.preventDefault();
+  // useUploadImage(uploadImage)
+  const uploadImage = () => {
+    const imgPath = document.querySelector("input[type=file]").files[0];
+    const reader = new FileReader();
+
+    reader.addEventListener(
+      "load",
+      function () {
+        // convert image file to base64 string and save to localStorage
+        localStorage.setItem("image", reader.result);
+        setImageUrl(reader.result);
+      },
+      false
+    );
+
+    if (imgPath) {
+      reader.readAsDataURL(imgPath);
+      // localStorage.setItem("image", reader.readAsDataURL(imgPath));
+    }
+  };
+
+  const randomUser = () => {
+    axios
+      .get("https://randomuser.me/api/")
+      .then((res) => res.data)
+      .then((data) => {
+        // console.log(data.results[0]);
+        onFirstNameChange(data.results[0].name.first);
+        onLastNameChange(data.results[0].name.last);
+        onEmailChange(data.results[0].email);
+        onStreetChange(data.results[0].location.street.name);
+        onHnrChange(data.results[0].location.street.number);
+        onPlzChange(data.results[0].location.postcode);
+        onCountryChange(data.results[0].location.country);
+        setImageUrl(data.results[0].picture.medium);
+      });
+  };
+
+  const loadenUser = () => {
+    // if localStorage "leer", styling von input und image ändern mit errorMessage "Bitte ausfüllen"
+    // else localStorage "nicht leer", hole die letzte aktuellen daten aus dem localeStorage raus.
+    if (localStorage.length !== 0) {
+      console.log("Hii from loadenUser");
+      setGenerierenClicked(true);
+      // setGenerierenClicked(false);
+      const extractedData = JSON.parse(localStorage.getItem("userData"));
+
+      onFirstNameChange(extractedData.firstNameValue);
+      onLastNameChange(extractedData.lastNameValue);
+      onEmailChange(extractedData.emailValue);
+      onStreetChange(extractedData.streetValue);
+      onHnrChange(extractedData.hnrValue);
+      onPlzChange(extractedData.plzValue);
+      onCountryChange(extractedData.countryValue);
+      setImageUrl(extractedData.imageUrl);
+    } else {
+      // Styling von Inputs-Felder ändern:
+      console.log("LocalStorage leer!");
+    }
+  };
+
+  const clickGenerierenHandler = (e) => {
+    e.preventDefault();
     randomUser();
+    setGenerierenClicked(true);
   };
 
   const clickAnlegenHandler = (e) => {
     e.preventDefault();
-    const data = {
-      firstNameValue,
-      lastNameValue,
-      emailValue,
-      streetValue,
-      hnrValue,
-      plzValue,
-      countryValue,
-    };
-    /* 
-    axios
-      .get(
-        "http://localhost:5000/api?firstName=" +
+    if (
+      firstNameValue &&
+      lastNameValue &&
+      emailValue &&
+      streetValue &&
+      hnrValue &&
+      plzValue &&
+      countryValue &&
+      imageUrl !== ""
+    ) {
+      setFormIsValid(true);
+      const data = {
+        firstNameValue,
+        lastNameValue,
+        emailValue,
+        streetValue,
+        hnrValue,
+        plzValue,
+        countryValue,
+        imageUrl,
+      };
+      /* 
+        axios
+        .get(
+          "http://localhost:5000/api?firstName=" +
           firstNameValue +
           "&lastName=" +
           lastNameValue
-      )
-      .then((res) => res.data)
-      .then((data) => {
-        console.log(data.message);
-      });
-    */
-    // if (Object.keys(data).length <=7) {
-    //   setIstAngelegt(true);
-    //   console.log(setIstAngelegt);
-    //   // console.log(object)
-    // }
-    localStorage.setItem("userData", JSON.stringify(data));
-    setIstAngelegt(true);
-    console.log(data);
-    setIsInputDisabled(true);
-    //to get the Object from localStorage
-    //console.log(JSON.parse(localStorage.getItem("userData")))
+          )
+          .then((res) => res.data)
+          .then((data) => {
+            console.log(data.message);
+          });
+          */
+
+      localStorage.setItem("userData", JSON.stringify(data));
+      setIstAngelegt(true);
+      setIsInputDisabled(true);
+      // console.log(data);
+    }
+
   };
 
   const clickBearbeitenHandler = (e) => {
     e.preventDefault();
     setIsBearbeitetClicked(true);
-    // const extractedData = "";
     setIsInputDisabled(false);
-    const extractedData = JSON.parse(localStorage.getItem("userData"));
+    
+    // styling vom input-Felder selectieren und dann zu Strichen ändern:
+    const inputPath = document.querySelectorAll("input");
+    console.log(inputPath);
+    for (let i = 0; i < inputPath.length; i++) {
+      inputPath[i].style.color =  "red";
+      inputPath[i].style.border = "solid 1px red";
 
-    console.log(extractedData);
+    }
+    // inputPath.addEventListener("load", function () {});
+
   };
 
- /* 
+  /* 
   // const fileSelectedHandler = (e) => {
   // setImageUrl(e.target.files[0]);
   // console.log(setImageUrl);
@@ -132,148 +217,153 @@ const SignUp = (props) => {
 
   // console.log(firstNameValue)
 */
- 
-/* */
-// const inputInfos = [
-//   { 
-//     id:1, 
-//     type:"text", 
-//     isInputDisabled: props.isInputDisabled, 
-//     name:"firstname", 
-//     value: props.firstNameValue, 
-//     placeholder:"Vorname", 
-//     onChangeHandler: function(event) { onFirstNameChange(event.target.value)}, 
-//     hasError: firstNameIsValid == false, 
-//   },
-//   { 
-//     id:2, 
-//     type:"text", 
-//     isInputDisabled: props.isInputDisabled, 
-//     name:"lastname", 
-//     value: props.lastNameValue, 
-//     placeholder:"Nachname", 
-//     onChangeHandler: function(event) { onLastNameChange(event.target.value)}, 
-//     hasError: lastNameIsValid == false, 
-//   },
-//   { 
-//     id: 3,
-//     type:"email", 
-//     isInputDisabled: props.isInputDisabled, 
-//     name:"email", 
-//     value: props.emailValue, 
-//     placeholder:"E-Mail-Adresse", 
-//     onChangeHandler: function(event) { onEmailChange(event.target.value)}, 
-//     hasError: lastNameIsValid == false,
-//   },
-//   {
 
-//   },
+  const clickLoadenHandler = (e) => {
+    e.preventDefault();
+    loadenUser();
+  };
 
-// ]
+  useEffect(() => {
+    if (localStorage.length !== 0) {
+      setGenerierenClicked(true);
+    } else {
+      setGenerierenClicked(false);
+    }
+  }, []);
 
+  const inputInfos = [
+    {
+      // id: 1,
+      type: "text",
+      isInputDisabled: isInputDisabled,
+      name: "firstname",
+      value: firstNameValue,
+      placeholder: "Vorname",
+      onChangeHandler: function (event) {
+        onFirstNameChange(event.target.value);
+      },
+      // hasError: firstNameIsValid === false,
+      gridPosition: "firstname-input",
+      validateMessage: "Vorname ist erforderlich",
+      isValid: firstNameIsValid,
+    },
+    {
+      // id: 2,
+      type: "text",
+      isInputDisabled: isInputDisabled,
+      name: "lastname",
+      value: lastNameValue,
+      placeholder: "Nachname",
+      onChangeHandler: function (event) {
+        onLastNameChange(event.target.value);
+      },
+      // hasError: lastNameIsValid === false,
+      gridPosition: "lastname-input",
+      validateMessage: "Nachname ist erforderlich",
+      isValid: lastNameIsValid,
+    },
 
+    {
+      // id: 3,
+      type: "email",
+      isInputDisabled: isInputDisabled,
+      name: "email",
+      value: emailValue,
+      placeholder: "E-Mail-Adresse",
+      onChangeHandler: function (event) {
+        onEmailChange(event.target.value);
+      },
+      // hasError: lastNameIsValid === false,
+      gridPosition: "email-input",
+      validateMessage: "Email ist erforderlich",
+      isValid: emailIsValid,
+    },
+    {
+      // id: 4,
+      type: "text",
+      isInputDisabled: isInputDisabled,
+      name: "street",
+      value: streetValue,
+      placeholder: "Straße",
+      onChangeHandler: function (event) {
+        onStreetChange(event.target.value);
+      },
+      //  hasError: streetIsValid === false,
+      gridPosition: "street-input",
+      validateMessage: "Straße ist erforderlich",
+      isValid: streetIsValid,
+    },
+    {
+      // id: 5,
+      type: "text" || "number",
+      isInputDisabled: isInputDisabled,
+      name: "hnr",
+      value: hnrValue,
+      placeholder: "Hsnr.",
+      onChangeHandler: function (event) {
+        onHnrChange(event.target.value);
+      },
+      // hasError: hnrIsValid === false,
+      gridPosition: "hnr-input",
+      validateMessage: " Hnr. ist erforderlich",
+      isValid: hnrIsValid,
+    },
+    {
+      // id: 6,
+      type: "text" || "number",
+      isInputDisabled: isInputDisabled,
+      name: "postcode",
+      value: plzValue,
+      placeholder: "PLZ",
+      onChangeHandler: function (event) {
+        onPlzChange(event.target.value);
+      },
+      // hasError: plzIsValid === false,
+      gridPosition: "postcode-input",
+      validateMessage: "PLZ ist erforderlich",
+      isValid: plzIsValid,
+    },
+    {
+      // id: 7,
+      type: "text",
+      isInputDisabled: isInputDisabled,
+      name: "country",
+      value: countryValue,
+      placeholder: "Ort",
+      onChangeHandler: function (event) {
+        onCountryChange(event.target.value);
+      },
+      // hasError: countryIsValid === false,
+      gridPosition: "country-input",
+      validateMessage: "Ort ist erforderlich",
+      isValid: countryIsValid,
+    },
+  ];
 
-// const inputs = inputInfos.map(function(input) {
-//   return <Input
-//     key={input.id}
-//     type={input.type}
-//     isInputDisabled={input.isInputDisabled}
-//     name={input.name}
-//     value={input.value}
-//     placeholder={input.placeholder}
-//     onChangeHandler={input.onChangeHandler}
-//     hasError={input.hasError}
-//   />
-// });
-
-
-return (
+  return (
     <FormBox>
-      <ProfileImage url={imageUrl} /> 
+      <ProfileImage
+        onChange={uploadImage}
+        url={imageUrl}
+        isInputDisabled={isInputDisabled}
+      />
       <div className="input-container">
-        <InputWrapper gridPosition="firstname-input">
-        {/* <useInputInfos /> */}
-        {useInputInfos.inputs[0]}
-          {!firstNameIsValid && <p>Vorname ist erforderlich</p>}
-          {/* <Error errorsMessage={errors} name="firstname" /> */}
-        </InputWrapper>
-
-        <InputWrapper gridPosition="lastname-input">
-          {/* {useInputInfos.inputs ? useInputInfos.inputs[1] : useInputInfos.inputs} */}
-          {!lastNameIsValid && <p>Vorname ist erforderlich</p>}
-          {/* <Error errorsMessage={errors} name="lastname" /> */}
-        </InputWrapper>
-
-        <InputWrapper gridPosition="email-input">
-        {/* {useInputInfos.inputs ? useInputInfos.inputs[2] : useInputInfos.inputs} */}
-          {/* <Input
-            type="email"
-            isInputDisabled={isInputDisabled}
-            name="email"
-            value={emailValue}
-            placeholder="E-Mail-Adresse"
-            onChangeHandler={(event) => onEmailChange(event.target.value)}
-            hasError={!emailIsValid}
-          /> */}
-          {!emailIsValid && <p>Email ist erforderlich</p>}
-          {/* <Error errorsMessage={errors} name="email" /> */}
-        </InputWrapper>
-
-        <InputWrapper gridPosition="street-input">
-          {/* <Input
-            type="text"
-            isInputDisabled={isInputDisabled}
-            name="street"
-            value={streetValue}
-            placeholder="Straße"
-            onChangeHandler={(event) => onStreetChange(event.target.value)}
-            hasError={!streetIsValid}
-          /> */}
-          {!streetIsValid && <p>Straße ist erforderlich</p>}
-          {/* <Error errorsMessage={errors} name="street" /> */}
-        </InputWrapper>
-
-        <InputWrapper gridPosition="hnr-input">
-          <Input
-            type="text"
-            isInputDisabled={isInputDisabled}
-            name="hnr"
-            value={hnrValue}
-            placeholder="Hsnr."
-            onChangeHandler={(event) => onHnrChange(event.target.value)}
-            hasError={!hnrIsValid}
-          />
-          {!hnrIsValid && <p> Hnr. ist erforderlich</p>}
-          {/* <Error errorsMessage={errors} name="hnr" /> */}
-        </InputWrapper>
-
-        <InputWrapper gridPosition="postcode-input">
-          <Input
-            type="number"
-            isInputDisabled={isInputDisabled}
-            name="postcode"
-            value={plzValue}
-            placeholder="PLZ"
-            onChangeHandler={(event) => onPlzChange(event.target.value)}
-            hasError={!plzIsValid}
-          />
-          {!plzIsValid && <p>PLZ ist erforderlich</p>}
-          {/* <Error errorsMessage={errors} name="postcode" /> */}
-        </InputWrapper>
-
-        <InputWrapper gridPosition="country-input">
-          <Input
-            name="country"
-            isInputDisabled={isInputDisabled}
-            type="text"
-            value={countryValue}
-            placeholder="Ort"
-            onChangeHandler={(event) => onCountryChange(event.target.value)}
-            hasError={!countryIsValid}
-          />
-          {!countryIsValid && <p>Ort ist erforderlich</p>}
-          {/* <Error errorsMessage={errors} name="country" /> */}
-        </InputWrapper>
+        {inputInfos.map(function (input, i) {
+          return (
+            <InputWrapper key={i} gridPosition={input.gridPosition}>
+              <Input
+                type={input.type}
+                isInputDisabled={input.isInputDisabled}
+                name={input.name}
+                value={input.value}
+                placeholder={input.placeholder}
+                onChangeHandler={input.onChangeHandler}
+                // hasError={input.hasError}
+              />
+              <>{!input.isValid && <p>{input.validateMessage}</p>}</>
+            </InputWrapper>
+          );
+        })}
       </div>
 
       <div className="btn_container">
@@ -300,13 +390,24 @@ return (
             <Button
               btnTitle={"User anlegen"}
               onClickHandler={clickAnlegenHandler}
-              className="btn create-user"
-              disabled={!formIsValid}
+              // className="btn create-user"
+              className={
+                // "btn create-user"
+                formIsValid ? "btn create-user" : "btn button-disabled"
+              }
             />
           </>
         )}
-
-        {/* {isTrue ? <></> : isTrue2 ? <></>: <></>} */}
+        <Button
+          btnTitle={"User loaden"}
+          onClickHandler={clickLoadenHandler}
+          className={
+            // istAngelegt ||
+            istAngelegt || istGenerierenClicked
+              ? "btn load-user-enable"
+              : "btn load-user-disable"
+          }
+        />
       </div>
     </FormBox>
   );

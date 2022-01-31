@@ -1,11 +1,29 @@
-.img-container {
+.custom-file-upload {
+  cursor: pointer;
+}
+.profile-pic {
+  margin-top: 1.5rem;
+  border: 10px solid #d7d8dd; 
+  border-radius: 50%;
+  width: 300px;
+  height: 300px;
+}
+input[type="file"] {
+  display: none;
+}
+
+
+
+
+/* .img-container {
   margin-top: 3rem;
   position: relative;
-  width: 400px;
-  height: 400px;
+  width: 300px;
+  height: 300px;
   border-radius: 50%;
   
-}
+} */
+/* 
 .profile-pic {
   border: 12px solid #d7d8dd;
   cursor: pointer;
@@ -13,6 +31,9 @@
   height: 400px;
   border-radius: 50%;
 }
+*/
+
+
 /* 
 input[type="file"] {
   cursor: pointer;

@@ -6,9 +6,12 @@ import './ProfileImage.css';
 const ProfileImage = (props) => {
     return ( 
         <div className="img-container">
-            <img src={props.url || profile} alt="img" className="profile-pic" />
+        {/* onChange={props.onChange}    src={props.url || profile} */}
+            <label htmlFor="file-upload" className='custom-file-upload'>
+                <img src={props.url || profile} alt="img" className="profile-pic" />
+            </label>
+            <input disabled={props.isInputDisabled} onChange={props.onChange} type="file" id="file-upload" title="&nbsp;" alt="img" accept="image/*"  />
             {/* <input type="file" className='file-input' title="&nbsp;" src={props.url || profile } alt="img" accept="image/*" onChange={props.onChange} /> */}
-            {/* <label htmlFor="file" src={props.url || profile} className='file-label-input' onChange={props.onChange} >Foto Hochladen</label> */}
         </div>
     );
 }

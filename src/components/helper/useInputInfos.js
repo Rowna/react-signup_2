@@ -3,82 +3,119 @@ import React from "react";
 import Input from "../Inputwrapper/Input/Input";
 import useFormInput from "./useFormInput";
 
-
 function useInputInfos(props) {
-    // onFirstNameChange
+  // onFirstNameChange
 
   const inputInfos = [
     {
       id: 1,
       type: "text",
-      isInputDisabled: props.isInputDisabled,
+      isInputDisabled: isInputDisabled,
       name: "firstname",
-      value: props.firstNameValue,
+      value: firstNameValue,
       placeholder: "Vorname",
       onChangeHandler: function (event) {
-        useFormInput.onFirstNameChange(event.target.value);
+        onFirstNameChange(event.target.value);
       },
-      hasError: useFormInput.firstNameIsValid === false,
+      // hasError: firstNameIsValid === false,
+      gridPosition: "firstname-input",
+      validateMessage: "Vorname ist erforderlich",
+      isValid: firstNameIsValid,
     },
     {
       id: 2,
       type: "text",
-      isInputDisabled: props.isInputDisabled,
+      isInputDisabled: isInputDisabled,
       name: "lastname",
-      value: props.lastNameValue,
+      value: lastNameValue,
       placeholder: "Nachname",
       onChangeHandler: function (event) {
-        useFormInput.onLastNameChange(event.target.value);
+        onLastNameChange(event.target.value);
       },
-      hasError: useFormInput.lastNameIsValid === false,
+      // hasError: lastNameIsValid === false,
+      gridPosition: "lastname-input",
+      validateMessage: "Nachname ist erforderlich",
+      isValid: lastNameIsValid,
     },
+
     {
       id: 3,
       type: "email",
-      isInputDisabled: props.isInputDisabled,
+      isInputDisabled: isInputDisabled,
       name: "email",
-      value: props.emailValue,
+      value: emailValue,
       placeholder: "E-Mail-Adresse",
       onChangeHandler: function (event) {
-        useFormInput.onEmailChange(event.target.value);
+        onEmailChange(event.target.value);
       },
-      hasError: useFormInput.lastNameIsValid === false,
+      // hasError: lastNameIsValid === false,
+      gridPosition: "email-input",
+      validateMessage: "Email ist erforderlich",
+      isValid: emailIsValid,
     },
     {
       id: 4,
       type: "text",
-      isInputDisabled: props.isInputDisabled,
+      isInputDisabled: isInputDisabled,
       name: "street",
-      value: props.streetValue,
+      value: streetValue,
       placeholder: "Straße",
       onChangeHandler: function (event) {
-        useFormInput.onStreetChange(event.target.value);
+        onStreetChange(event.target.value);
       },
-      hasError: useFormInput.streetIsValid === false,
+      //  hasError: streetIsValid === false,
+      gridPosition: "street-input",
+      validateMessage: "Straße ist erforderlich",
+      isValid: streetIsValid,
     },
     {
-
+      id: 5,
+      type: "text" || "number",
+      isInputDisabled: isInputDisabled,
+      name: "hnr",
+      value: hnrValue,
+      placeholder: "Hsnr.",
+      onChangeHandler: function (event) {
+        onHnrChange(event.target.value);
+      },
+      // hasError: hnrIsValid === false,
+      gridPosition: "hnr-input",
+      validateMessage: " Hnr. ist erforderlich",
+      isValid: hnrIsValid,
     },
-
+    {
+      id: 6,
+      type: "text" || "number",
+      isInputDisabled: isInputDisabled,
+      name: "postcode",
+      value: plzValue,
+      placeholder: "PLZ",
+      onChangeHandler: function (event) {
+        onPlzChange(event.target.value);
+      },
+      // hasError: plzIsValid === false,
+      gridPosition: "postcode-input",
+      validateMessage: "PLZ ist erforderlich",
+      isValid: plzIsValid,
+    },
+    {
+      id: 7,
+      type: "text",
+      isInputDisabled: isInputDisabled,
+      name: "country",
+      value: countryValue,
+      placeholder: "Ort",
+      onChangeHandler: function (event) {
+        onCountryChange(event.target.value);
+      },
+      // hasError: countryIsValid === false,
+      gridPosition: "country-input",
+      validateMessage: "Ort ist erforderlich",
+      isValid: countryIsValid,
+    },
   ];
 
-
-  const inputs = inputInfos.map(function (input) {
-    return (
-      <Input
-        key={input.id}
-        type={input.type}
-        isInputDisabled={input.isInputDisabled}
-        name={input.name}
-        value={input.value}
-        placeholder={input.placeholder}
-        onChangeHandler={input.onChangeHandler}
-        hasError={input.hasError}
-      />
-    );
-  });
-
-  return <div>{inputs}</div>;
+  return inputInfos;
 }
 
 export default useInputInfos;
