@@ -54,6 +54,7 @@
 }
 .edit-user {
   border: solid 3.5px #10ac84;
+  /* background-color: #9e9e9e; */
   background-color: #10ac84;
   color: #ffffff;
 }
@@ -62,12 +63,15 @@
   background-color: #10ac84;
   color: #ffffff;
 }
+
 .load-user-enable {
+  /* display: none; */
   grid-column: 1/3;
   background-color: #10ac84;
   border: solid 3.5px #10ac84;
 }
 .load-user-disable {
+  /* display: none; */
   grid-column: 1/3;
   background-color: #b9babb;
   border: solid 3.5px #b9babb;

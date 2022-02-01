@@ -38,6 +38,8 @@ const SignUp = (props) => {
 
   const [istBearbeitetClicked, setIsBearbeitetClicked] = useState(false);
 
+  const [showButton, setShowButton] = useState(false);
+
   // für setFormIsValid
   useEffect(() => {
     // console.log(formIsValid)
@@ -74,6 +76,15 @@ const SignUp = (props) => {
     imageUrl,
   ]);
 
+  useEffect(() => {
+    if (istGenerierenClicked || istAngelegt) {
+      setShowButton(true);
+      console.log(istGenerierenClicked);
+      console.log(istAngelegt);
+      // console.log(showButton);
+    }
+  }, [istGenerierenClicked, istAngelegt]);
+
   // useUploadImage(uploadImage)
   const uploadImage = () => {
     const imgPath = document.querySelector("input[type=file]").files[0];
@@ -83,7 +94,7 @@ const SignUp = (props) => {
       "load",
       function () {
         // convert image file to base64 string and save to localStorage
-        localStorage.setItem("image", reader.result);
+        // localStorage.setItem("image", reader.result);
         setImageUrl(reader.result);
       },
       false
@@ -139,10 +150,13 @@ const SignUp = (props) => {
     e.preventDefault();
     randomUser();
     setGenerierenClicked(true);
+    // const user_loaden = document.querySelector("button[classname=load-user-enable]");
+    // document.querySelector("button[class=load-user-enable]").files[1].style.display = "block";
   };
 
   const clickAnlegenHandler = (e) => {
     e.preventDefault();
+
     if (
       firstNameValue &&
       lastNameValue &&
@@ -167,7 +181,7 @@ const SignUp = (props) => {
       /* 
         axios
         .get(
-          "http://localhost:5000/api?firstName=" +
+          "http://localhost:5000/api?firstName=" + 
           firstNameValue +
           "&lastName=" +
           lastNameValue
@@ -181,27 +195,50 @@ const SignUp = (props) => {
       localStorage.setItem("userData", JSON.stringify(data));
       setIstAngelegt(true);
       setIsInputDisabled(true);
-      // console.log(data);
-    }
 
+      // console.log(data);
+    } else {
+      setFormIsValid(false);
+    }
+    // console.log(formIsValid);
   };
 
   const clickBearbeitenHandler = (e) => {
     e.preventDefault();
     setIsBearbeitetClicked(true);
     setIsInputDisabled(false);
-    
+
     // styling vom input-Felder selectieren und dann zu Strichen ändern:
     const inputPath = document.querySelectorAll("input");
     const imgProfilePath = document.querySelector("img[class=profile-pic]");
-    console.log(inputPath);
-    for (let i = 0; i < inputPath.length; i++) {
-      inputPath[i].style.color =  "red";
-      inputPath[i].style.border = "solid 1px red";
-    }
-    imgProfilePath.style.border = "solid 5px red";
-    // inputPath.addEventListener("load", function () {});
+    // var span = document.querySelectorAll("input").appendChild("span");
 
+    console.log(inputPath);
+
+    for (let i = 0; i < inputPath.length; i++) {
+      if (firstNameValue === "") {
+        console.log(!firstNameValue);
+        inputPath[i].style.color = "#2c2c2c";
+        inputPath[i].style.backgroundColor = "transparent";
+        inputPath[i].style.border = "solid 1px #2c2c2c";
+        imgProfilePath.style.border = "solid 4px #2c2c2c";
+      } else {
+        inputPath[i].style.color = "rot";
+        inputPath[i].style.backgroundColor = "transparent";
+        inputPath[i].style.border = "solid 1px red";
+        imgProfilePath.style.border = "solid 4px red";
+      }
+      // inputPath[i].style.color = "#2c2c2c";
+      // inputPath[i].style.backgroundColor = "transparent";
+      // inputPath[i].style.border = "solid 1px red";
+      // span.setAttribute("class", "input_span");
+      // span.style.color = "rot";
+      // span.style.backgroundColor = "rot";
+
+      // console.log(span);
+    }
+    // imgProfilePath.style.border = "solid 5px red";
+    // inputPath.addEventListener("load", function () {});
   };
 
   /* 
@@ -231,6 +268,33 @@ const SignUp = (props) => {
       setGenerierenClicked(false);
     }
   }, []);
+
+  const clickSpeichernHandler = (e) => {
+    e.preventDefault();
+    console.log("Speichern geklickt!");
+    setIsInputDisabled(true);
+    const data = {
+      firstNameValue,
+      lastNameValue,
+      emailValue,
+      streetValue,
+      hnrValue,
+      plzValue,
+      countryValue,
+      imageUrl,
+    };
+    localStorage.setItem("userData", JSON.stringify(data));
+
+    const inputPath = document.querySelectorAll("input");
+    const imgProfilePath = document.querySelector("img[class=profile-pic]");
+
+    for (let i = 0; i < inputPath.length; i++) {
+      inputPath[i].style.color = "#2c2c2c";
+      inputPath[i].style.backgroundColor = "#F1F2F6";
+      inputPath[i].style.border = "solid 1px #F1F2F6";
+      imgProfilePath.style.border = "#F1F2F6";
+    }
+  };
 
   const inputInfos = [
     {
@@ -348,6 +412,7 @@ const SignUp = (props) => {
         url={imageUrl}
         isInputDisabled={isInputDisabled}
       />
+      <>{!imageUrl === "" && <p>Profile Bild ist erforderlich!</p>}</>
       <div className="input-container">
         {inputInfos.map(function (input, i) {
           return (
@@ -371,7 +436,11 @@ const SignUp = (props) => {
         {istAngelegt ? (
           <>
             {istBearbeitetClicked ? (
-              <Button btnTitle={"Speichern"} className="btn save-user" />
+              <Button
+                btnTitle={"Speichern"}
+                className="btn save-user"
+                onClickHandler={clickSpeichernHandler}
+              />
             ) : (
               <Button
                 btnTitle={"Bearbeiten"}
@@ -399,16 +468,18 @@ const SignUp = (props) => {
             />
           </>
         )}
-        <Button
-          btnTitle={"User loaden"}
-          onClickHandler={clickLoadenHandler}
-          className={
-            // istAngelegt ||
-            istAngelegt || istGenerierenClicked
-              ? "btn load-user-enable"
-              : "btn load-user-disable"
-          }
-        />
+        {showButton && (
+          <Button
+            btnTitle={"User loaden"}
+            onClickHandler={clickLoadenHandler}
+            className={
+              // istAngelegt ||
+              istAngelegt || istGenerierenClicked
+                ? "btn load-user-enable"
+                : "btn load-user-disable"
+            }
+          />
+        )}
       </div>
     </FormBox>
   );

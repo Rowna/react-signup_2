@@ -7,12 +7,13 @@
     border: none;
     font-size: 1.2rem;
     padding: 0 1.5rem;
+    /* position: relative; */
 }
 
-.input--has-error {
+/* .input--has-error {
     border-radius: 23px;
     border: 2px solid red;
-}
+} */
 
 /* .input-edit {
     width: 100%;

@@ -3,10 +3,11 @@ import "./Input.css";
 
 //function Input(props) {
 const Input = (props) => {
-  const errorClass = props.hasError ? "input--has-error" : "";
+  // const errorClass = props.hasError ? "input--has-error" : "";
 
   return (
-    <div className={errorClass}>
+    // <div className={errorClass}>
+    <>
       <input 
         className="input"
         disabled={props.isInputDisabled}
@@ -16,7 +17,8 @@ const Input = (props) => {
         placeholder={props.placeholder}
         onChange={props.onChangeHandler}
       />
-    </div>
+    </>
+    // </div>
   );
 };
 
