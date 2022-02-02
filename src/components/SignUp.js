@@ -13,6 +13,13 @@ import axios from "axios";
 // import useInputInfos from "./helper/useInputInfos";
 
 const SignUp = (props) => {
+  // aus einer externen Datei die Daten lesen
+  // const {
+  //   firstNameValue,
+  //   firstNameIsValid,
+  //   onFirstNameChange,
+  // } = useInputInfos();
+
   // useFormInput() selbst-erstellter Hook
   const [firstNameValue, firstNameIsValid, onFirstNameChange] =
     useFormInput("[\\a-zA-Zء-ي]{2}");
@@ -32,12 +39,11 @@ const SignUp = (props) => {
   const [formIsValid, setFormIsValid] = useState(false);
   // const [imageUrl, setImageUrl] = useUploadImage("");
   const [imageUrl, setImageUrl] = useState("");
+
   const [istAngelegt, setIstAngelegt] = useState(false);
   const [isInputDisabled, setIsInputDisabled] = useState(false);
   const [istGenerierenClicked, setGenerierenClicked] = useState(false);
-
   const [istBearbeitetClicked, setIsBearbeitetClicked] = useState(false);
-
   const [showButton, setShowButton] = useState(false);
 
   // für setFormIsValid
@@ -79,8 +85,8 @@ const SignUp = (props) => {
   useEffect(() => {
     if (istGenerierenClicked || istAngelegt) {
       setShowButton(true);
-      console.log(istGenerierenClicked);
-      console.log(istAngelegt);
+      // console.log(istGenerierenClicked);
+      // console.log(istAngelegt);
       // console.log(showButton);
     }
   }, [istGenerierenClicked, istAngelegt]);
@@ -168,6 +174,7 @@ const SignUp = (props) => {
       imageUrl !== ""
     ) {
       setFormIsValid(true);
+      setShowButton(true);
       const data = {
         firstNameValue,
         lastNameValue,

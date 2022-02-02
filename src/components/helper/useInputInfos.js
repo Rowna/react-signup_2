@@ -4,11 +4,28 @@ import Input from "../Inputwrapper/Input/Input";
 import useFormInput from "./useFormInput";
 
 function useInputInfos(props) {
+  // useFormInput() selbst-erstellter Hook
+  const [firstNameValue, firstNameIsValid, onFirstNameChange] =
+    useFormInput("[\\a-zA-Zء-ي]{2}");
+  const [lastNameValue, lastNameIsValid, onLastNameChange] =
+    useFormInput("[\\a-zA-Zء-ي]{2}");
+  const [emailValue, emailIsValid, onEmailChange] = useFormInput(
+    "^[\\a-zA-Z0-9._-]+@[\\a-zA-Z0-9.-]+.[\\a-zA-Z]$"
+  ); // lea@gmx.de
+  const [streetValue, streetIsValid, onStreetChange] =
+    useFormInput("[\\a-zA-Zء-ي]{3}");
+  const [hnrValue, hnrIsValid, onHnrChange] = useFormInput("^[\\d][\\w]*$");
+  const [plzValue, plzIsValid, onPlzChange] = useFormInput("[\\a-zA-Z0-9]{3}");
+  const [countryValue, countryIsValid, onCountryChange] = useFormInput(
+    "[\\0-9a-zA-Zء-ي]{3}"
+  );
+
+  const [formIsValid, setFormIsValid] = useState(false);
   // onFirstNameChange
 
   const inputInfos = [
     {
-      id: 1,
+      // id: 1,
       type: "text",
       isInputDisabled: isInputDisabled,
       name: "firstname",
@@ -23,7 +40,7 @@ function useInputInfos(props) {
       isValid: firstNameIsValid,
     },
     {
-      id: 2,
+      // id: 2,
       type: "text",
       isInputDisabled: isInputDisabled,
       name: "lastname",
@@ -39,7 +56,7 @@ function useInputInfos(props) {
     },
 
     {
-      id: 3,
+      // id: 3,
       type: "email",
       isInputDisabled: isInputDisabled,
       name: "email",
@@ -54,7 +71,7 @@ function useInputInfos(props) {
       isValid: emailIsValid,
     },
     {
-      id: 4,
+      // id: 4,
       type: "text",
       isInputDisabled: isInputDisabled,
       name: "street",
@@ -69,7 +86,7 @@ function useInputInfos(props) {
       isValid: streetIsValid,
     },
     {
-      id: 5,
+      // id: 5,
       type: "text" || "number",
       isInputDisabled: isInputDisabled,
       name: "hnr",
@@ -84,7 +101,7 @@ function useInputInfos(props) {
       isValid: hnrIsValid,
     },
     {
-      id: 6,
+      // id: 6,
       type: "text" || "number",
       isInputDisabled: isInputDisabled,
       name: "postcode",
@@ -99,7 +116,7 @@ function useInputInfos(props) {
       isValid: plzIsValid,
     },
     {
-      id: 7,
+      // id: 7,
       type: "text",
       isInputDisabled: isInputDisabled,
       name: "country",
@@ -115,7 +132,11 @@ function useInputInfos(props) {
     },
   ];
 
-  return inputInfos;
+  return {
+    firstNameValue,
+    firstNameIsValid,
+    onFirstNameChange,
+  };
 }
 
 export default useInputInfos;
